@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    text-decoration: none;
+    list-style: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  body{
+    font-family: "Gill Sans", sans-serif;
+    @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+  }
+  html {
+    touch-action: manipulation;
+}
+
+  .container{
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }                       
+
+::-webkit-scrollbar {
+  width: 10px;
+  border-radius: 5px;
+  background-color: #e5e7eb; /* Color de fondo del track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #0f52ba 0%, #87ceeb 50%, #ffd700 100%);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #e5e7eb; /* Color del track */
+  border-radius: 5px;
+}
+
+
+/* Esto aplica a los botones de desplazamiento */
+::-webkit-scrollbar-button:start:decrement {
+  display: none; 
+}
+
+
+.slick-slider {
+  position: relative;
+  display: block;
+  box-sizing: border-box;
+}
+
+
+
+.slick-prev:before,
+.slick-next:before {
+  @apply text-gray-500 dark:text-gray-400;
+  font-size: 20px;
+}
+
+.slick-dots li button:before {
+  font-size: 12px;
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+.slick-dots li.slick-active button:before {
+  @apply text-gray-700 dark:text-gray-300;
+}
+
+/* Scrollbar dorado para el área de entrevistas */
+.panel-interviews-scroll::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+}
+.panel-interviews-scroll::-webkit-scrollbar-thumb {
+  background: #ffd700;
+  border-radius: 8px;
+}
+.panel-interviews-scroll::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 8px;
+}
+
+/* Firefox */
+.panel-interviews-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #ffd700 #e5e7eb;
+}
+
+/* Scrollbar amarillo para el área de entrevistas del entrevistador */
+.scrollbar-yellow-viewinterview::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+}
+.scrollbar-yellow-viewinterview::-webkit-scrollbar-thumb {
+  background: #ffd700;
+  border-radius: 8px;
+}
+.scrollbar-yellow-viewinterview::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 8px;
+}
+
+.scrollbar-yellow-viewinterview {
+  scrollbar-width: thin;
+  scrollbar-color: #ffd700 #e5e7eb;
+}
+
+/* Scrollbar amarillo para el área de crear entrevistas */
+.scrollbar-yellow-createinterview::-webkit-scrollbar {
+  width: 8px;
+  border-radius: 8px;
+}
+.scrollbar-yellow-createinterview::-webkit-scrollbar-thumb {
+  background: #ffd700;
+  border-radius: 8px;
+}
+.scrollbar-yellow-createinterview::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 8px;
+}
+
+.scrollbar-yellow-createinterview {
+  scrollbar-width: thin;
+  scrollbar-color: #ffd700 #e5e7eb;
+}
+
