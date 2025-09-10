@@ -1,11 +1,23 @@
 import Protys from "prop-types";
 import { t } from "../../i18n";
 import { useTheme } from "../../context/themeContext";
-
+/**
+ * 📌 Componente Info
+ * Este componente muestra la información básica de un usuario
+ * en una tarjeta con diseño atractivo usando TailwindCSS.
+ * 
+ * Props:
+ * - name: Nombre del usuario
+ * - email: Correo electrónico
+ * - indetifiquer: Identificador único
+ * - role: Rol del usuario en el sistema
+ */
 function Info({ name, email, indetifiquer, role }) {
+  // Obtenemos el idioma actual desde el contexto de la aplicación
   const { language } = useTheme();
 
   return (
+    // Contenedor principal con fondo degradado azul y borde amarillo
     <div className="h-full w-full flex flex-col items-center justify-center bg-gradient-to-r from-[#283e56] to-[#4fc3f7] border-2 border-yellow-400 overflow-hidden rounded-lg">
       <div className="flex flex-col w-full max-w-xl p-6 ">
         <div className="flex flex-col space-y-4">
@@ -103,13 +115,13 @@ function Info({ name, email, indetifiquer, role }) {
     </div>
   );
 }
-
+// Exportamos el componente para su uso en otras partes de la app
 export default Info;
-
+// Definición de los tipos de props con PropTypes
 Info.propTypes = {
-  name: Protys.string,
-  email: Protys.string,
-  indetifiquer: Protys.string,
-  date: Protys.string,
-  role: Protys.string,
+  name: Protys.string,     // Nombre del usuario
+  email: Protys.string,    // Correo electrónico
+  indetifiquer: Protys.string,   // Identificador único  
+  date: Protys.string,     // Fecha (no usada actualmente)
+  role: Protys.string,     // Rol del usuario
 };

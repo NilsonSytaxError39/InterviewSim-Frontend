@@ -1,3 +1,4 @@
+
 import { useForm } from "react-hook-form";
 import { createInterviewRequest } from "../api/interview.js";
 import { useAuth } from "../context/authContext.jsx";
@@ -5,6 +6,13 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
+
+/**
+ * Componente para crear una nueva entrevista.
+ * Permite al usuario ingresar título, descripción, empresa, dificultad y tipo de entrevista.
+ * Envía los datos al backend y muestra notificaciones de éxito o error.
+ * @returns {JSX.Element}
+ */
 
 function CreateInterview() {
   const {
@@ -20,16 +28,24 @@ function CreateInterview() {
   const [loading, setLoading] = useState(false);
   const { language } = useTheme();
 
+
+  /**
+   * Maneja el envío del formulario de creación de entrevista.
+   * Envía los datos al backend y gestiona los estados de carga y error.
+   * @param {object} values - Datos del formulario
+   */
   const onSubmit = async (values) => {
     setLoading(true);
     const userId = user.id;
     try {
+      // Construye el objeto de datos para enviar
       const data = { ...values, userId, tipoEntrevista };
       console.log("Datos enviados:", data);
       await createInterviewRequest(data);
       toast.success(t("interview_created_success", language));
       reset();
     } catch (error) {
+      // Manejo de errores de la API
       console.log(error);
       toast.error(t("interview_created_error", language));
       setError("apiError", {
@@ -41,8 +57,10 @@ function CreateInterview() {
     }
   };
 
+  // Renderiza el formulario de creación de entrevista y la imagen decorativa
   return (
     <div className="h-full w-full flex overflow-hidden space-x-5 items-center justify-center">
+      {/* Imagen decorativa */}
       <div className="w-1/2 h-full bg-cover bg-center rounded-lg">
         <img
           src="https://coderslink.com/wp-content/uploads/2023/06/Entrevista-Tecnica-Animado.jpeg"
@@ -50,17 +68,20 @@ function CreateInterview() {
           className="w-full h-full object-cover rounded-lg"
         />
       </div>
+      {/* Formulario principal */}
       <div className="flex flex-col p-6 w-1/2 h-full bg-gradient-to-r from-[#283e56] to-[#4fc3f7] rounded-lg overflow-hidden scrollbar-yellow-createinterview">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="space-y-5 items-center justify-center my-auto overflow-y-auto"
         >
           <div className="flex flex-col space-y-8 p-6 bg-white dark:bg-gray-900 rounded-lg shadow-xl">
+            {/* Título */}
             <h1 className="flex items-center justify-center">
               <span className="text-2xl font-bold text-black dark:text-white">
                 {t("create_interview", language)}
               </span>
             </h1>
+            {/* Campo título de la entrevista */}
             <div className="flex flex-col">
               <label
                 htmlFor="title"
@@ -86,6 +107,7 @@ function CreateInterview() {
                 </span>
               )}
             </div>
+            {/* Campo descripción */}
             <div className="flex flex-col">
               <label
                 htmlFor="description"
@@ -109,6 +131,7 @@ function CreateInterview() {
                 </span>
               )}
             </div>
+            {/* Campo empresa */}
             <div className="flex flex-col">
               <label
                 htmlFor="empresa"
@@ -133,6 +156,7 @@ function CreateInterview() {
                 </span>
               )}
             </div>
+            {/* Campo dificultad */}
             <div className="flex flex-col">
               <label
                 htmlFor="Dificultad"
@@ -163,6 +187,7 @@ function CreateInterview() {
                 </span>
               )}
             </div>
+            {/* Selección de tipo de entrevista */}
             <div className="flex flex-col mb-6">
               <label
                 htmlFor="tipoEntrevista"
@@ -171,6 +196,7 @@ function CreateInterview() {
                 {t("interview_type", language)}
               </label>
               <div className="flex justify-between space-x-4">
+                {/* Opción múltiple */}
                 <div
                   className={`flex items-center space-x-2 p-3 border rounded-lg cursor-pointer transition-colors duration-300 justify-center ${
                     tipoEntrevista === "opcionMultiple"
@@ -205,6 +231,7 @@ function CreateInterview() {
                     {t("option_multiple", language)}
                   </span>
                 </div>
+                {/* Programación */}
                 <div
                   className={`flex items-center space-x-2 p-3 border rounded-lg cursor-pointer transition-colors duration-300 justify-center ${
                     tipoEntrevista === "programacion"
@@ -242,12 +269,14 @@ function CreateInterview() {
               </div>
             </div>
 
+            {/* Error de la API */}
             {errors.apiError && (
               <span className="text-red-500 text-xs block text-center mb-2">
                 {errors.apiError.message}
               </span>
             )}
 
+            {/* Botón de envío */}
             <div className="flex justify-center items-center">
               <button
                 type="submit"

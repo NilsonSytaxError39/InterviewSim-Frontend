@@ -1,5 +1,12 @@
 import PropTypes from "prop-types";
 
+/**
+ * Decodifica una cadena en base64 a string legible.
+ * Intenta usar atob, y si falla, usa Buffer (Node.js). Si ambos fallan, retorna la cadena original.
+ * @param {string} str - Cadena codificada en base64
+ * @returns {string} Cadena decodificada
+ */
+
 // Función para decodificar base64 a string
 function decodeBase64(str) {
   if (!str) return "";
@@ -16,18 +23,31 @@ function decodeBase64(str) {
   }
 }
 
+
+/**
+ * Componente que muestra el resultado de la compilación y ejecución de código.
+ * Recibe un objeto outputDetails con información sobre el estado y salidas del proceso.
+ * @param {{ outputDetails: object }} props
+ * @returns {JSX.Element}
+ */
 const ConsolaOutput = ({ outputDetails }) => {
+  // Muestra en consola los detalles recibidos (útil para debug)
   console.log(
     "ConsolaOutput component rendered with outputDetails:",
     outputDetails
   );
+
+  /**
+   * Determina el mensaje a mostrar según el estado de la compilación/ejecución.
+   * @returns {JSX.Element|string}
+   */
   const getOutput = () => {
     if (!outputDetails) return "No hay salida para mostrar.";
 
     let statusId = outputDetails?.status?.id;
 
     if (statusId === 6) {
-      // Compilation error
+      // Error de compilación
       return (
         <pre className="px-2 py-1 font-normal text-xs text-red-500">
           {decodeBase64(outputDetails?.compile_output) ||
@@ -35,27 +55,28 @@ const ConsolaOutput = ({ outputDetails }) => {
         </pre>
       );
     } else if (statusId === 3) {
-      // Successful execution
+      // Ejecución exitosa
       return (
         <pre className="px-2 py-1 font-normal text-xs text-green-500">
           {decodeBase64(outputDetails?.stdout) || "No output available."}
         </pre>
       );
     } else if (statusId === 5) {
-      // Time Limit Exceeded
+      // Tiempo límite excedido
       return (
         <pre className="px-2 py-1 font-normal text-xs text-red-500">
           Time Limit Exceeded
         </pre>
       );
     } else if (statusId === 11) {
-      // Stack Limit Exceeded
+      // Límite de pila excedido
       return (
         <pre className="px-2 py-1 font-normal text-xs text-red-500">
           Stack Limit Exceeded
         </pre>
       );
     } else {
+      // Otros errores
       return (
         <pre className="px-2 py-1 font-normal text-xs text-red-500">
           {decodeBase64(outputDetails?.stderr) || "An error occurred."}
@@ -64,6 +85,7 @@ const ConsolaOutput = ({ outputDetails }) => {
     }
   };
 
+  // Renderiza el resultado en un contenedor estilizado
   return (
     <div className="w-full h-full rounded-md text-white font-normal text-sm overflow-y-auto bg-custom-bg flex flex-col">
       <p className="p-3 whitespace-pre-wrap">
@@ -73,6 +95,7 @@ const ConsolaOutput = ({ outputDetails }) => {
   );
 };
 
+// Validación de tipos para las props
 ConsolaOutput.propTypes = { outputDetails: PropTypes.object };
 
 export default ConsolaOutput;

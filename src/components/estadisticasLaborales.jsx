@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import Spinner from "./spinner";
 import {
@@ -13,11 +14,22 @@ import { mostrarInfoRequest } from "../api/interview";
 import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
 
+/**
+ * Componente que muestra estadísticas laborales por país en formato de gráfica de barras.
+ * Obtiene los datos desde la API y los presenta agrupados por país y cantidad de entrevistas.
+ * @returns {JSX.Element}
+ */
+
+
 function EstadisticasLaborales() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { language } = useTheme();
 
+  /**
+   * Obtiene los datos laborales desde la API y los formatea para la gráfica.
+   * Actualiza el estado local con los datos recibidos.
+   */
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -29,7 +41,7 @@ function EstadisticasLaborales() {
         const respuesta = DatosInfo.data || [];
         console.log("Datos obtenidos del backend:", respuesta);
 
-        // Formatear los datos obtenidos
+        // Formatear los datos obtenidos para la gráfica
         const formattedData = respuesta.data.map((item, index) => ({
           id: `${item.country}-${index}`,
           country: item.country || "Desconocido",
@@ -48,6 +60,8 @@ function EstadisticasLaborales() {
     fetchData();
   }, []);
 
+
+  // Muestra spinner mientras se cargan los datos
   if (loading) {
     return (
       <div className="flex justify-center items-center w-full h-full relative">
@@ -56,6 +70,7 @@ function EstadisticasLaborales() {
     );
   }
 
+  // Si no hay datos, muestra mensaje informativo
   if (data.length === 0) {
     return (
       <div className="flex justify-center items-center w-full h-full">
@@ -66,9 +81,11 @@ function EstadisticasLaborales() {
     );
   }
 
+  // Renderiza la gráfica de barras con los datos laborales por país
   return (
     <div className="flex items-center justify-center h-full w-full overflow-hidden rounded-lg p-4">
       <div className="flex flex-col justify-center items-center h-full w-full">
+        {/* Título de la gráfica */}
         <h1 className="text-lg font-bold m-3 text-gray-400">
           {t("laboral_stats_title", language).replace(
             "{{year}}",
@@ -83,10 +100,9 @@ function EstadisticasLaborales() {
             >
               <defs>
                 <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#0f52ba" />{" "}
-                  {/* Azul metalizado */}
-                  <stop offset="50%" stopColor="#87ceeb" /> {/* Azul celeste */}
-                  <stop offset="100%" stopColor="#ffd700" /> {/* Dorado */}
+                  <stop offset="0%" stopColor="#0f52ba" />{/* Azul metalizado */}
+                  <stop offset="50%" stopColor="#87ceeb" />{/* Azul celeste */}
+                  <stop offset="100%" stopColor="#ffd700" />{/* Dorado */}
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" />

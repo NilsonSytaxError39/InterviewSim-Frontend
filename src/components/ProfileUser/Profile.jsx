@@ -11,6 +11,7 @@ import { updateProfileRequest } from "../../api/auth";
 import { toast } from "react-toastify";
 
 function Profile() {
+  // Obtenemos el usuario desde el contexto de autenticación
   const { user } = useAuth();
   const navigate = useNavigate();
   const { language } = useTheme();
@@ -18,13 +19,14 @@ function Profile() {
   const Back = () => {
     window.history.back();
   };
-
-  const [profileImage, setProfileImage] = useState(Logo);
+  // Estado inicial del perfil
+  const [profileImage, setProfileImage] = useState(Logo); // Imagen de perfil (por defecto el logo)
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [indetifiquer, setIndetifiquer] = useState("");
-  const [fechas, setFechas] = useState("");
-  const [role, setRole] = useState("");
+  const [indetifiquer, setIndetifiquer] = useState("");  // ID del usuario
+  const [fechas, setFechas] = useState(""); // Fecha de registro
+  const [role, setRole] = useState(""); // Rol del usuario (student / teacher)
+    // Estados para edición de perfil
   const [showEditModal, setShowEditModal] = useState(false);
   const [newName, setNewName] = useState("");
   const [newPhoto, setNewPhoto] = useState(null);
@@ -34,11 +36,11 @@ function Profile() {
   const [newPhone, setNewPhone] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  // 🔹 Carga dinámica de imagen según la primera letra del nombre de usuario
   useEffect(() => {
     const loadImage = async () => {
       try {
-        const firstLetter = user?.userName?.charAt(0).toUpperCase();
+        const firstLetter = user?.userName?.charAt(0).toUpperCase(); // Primera letra del nombre
         const image = await import(`../../assets/Letras/${firstLetter}.png`);
         setProfileImage(image.default);
       } catch (error) {
@@ -51,7 +53,7 @@ function Profile() {
       loadImage();
     }
   }, [user]);
-
+  // 🔹 Cuando el usuario cambia, se actualizan los datos del perfil
   useEffect(() => {
     setUsername(user.userName);
     setEmail(user.email);
@@ -64,6 +66,7 @@ function Profile() {
     setNewPhone(user.phone || "");
   }, [user, profileImage]);
 
+  // 🔹 Redirección según el rol del usuario
   const handleRedirect = () => {
     if (user?.role === "student") {
       navigate("/student");
@@ -71,9 +74,11 @@ function Profile() {
       navigate("/teacher");
     }
   };
-
+  
+  // Abrir el modal de edición
   const handleEditProfile = () => setShowEditModal(true);
 
+  // Cerrar el modal y resetear cambios
   const handleCloseModal = () => {
     setShowEditModal(false);
     setNewPhoto(null);
@@ -81,16 +86,18 @@ function Profile() {
     setNewName(username);
   };
 
+  // 🔹 Manejo de carga de foto
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
       setNewPhoto(file);
-      setPreviewPhoto(URL.createObjectURL(file));
+      setPreviewPhoto(URL.createObjectURL(file)); // Vista previa de la foto
     } else {
       toast.error(t("photo_invalid", language));
     }
   };
 
+  // 🔹 Guardar cambios del perfil en el backend
   const handleSaveChanges = async (e) => {
     e.preventDefault();
     if (!newName) {
@@ -101,6 +108,8 @@ function Profile() {
       toast.error(t("passwords_no_match", language));
       return;
     }
+
+    // Enviamos datos al backend
     setLoadingEdit(true);
     const formData = new FormData();
     formData.append("userName", newName);
@@ -112,7 +121,7 @@ function Profile() {
       await updateProfileRequest(formData);
       toast.success(t("profile_update_success", language));
       setShowEditModal(false);
-      window.location.reload();
+      window.location.reload(); // Recarga la página para reflejar cambios
     } catch (err) {
       toast.error(t("profile_update_error", language));
     } finally {
@@ -120,14 +129,18 @@ function Profile() {
     }
   };
 
+  // 🔹 Renderizado del componente
   return (
     <div className="h-screen w-full p-5 overflow-auto bg-[#cde5ff] dark:bg-gray-900">
       <div className="flex flex-col items-start h-full">
+        {/* Barra superior con botón de volver, logo e info usuario */}
         <div className="w-full flex justify-between items-center rounded-lg space-x-6 mx-auto">
+          {/* Botón regresar */}
           <button
             onClick={Back}
             className="rounded-full p-4 bg-gradient-to-r from-[#283e56] to-[#4fc3f7] shadow-md hover:scale-110 transform duration-200 ease-in-out"
           >
+            {/* Icono flecha */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -143,6 +156,7 @@ function Profile() {
               />
             </svg>
           </button>
+          {/* Logo y título */}
           <div className="flex text-center bg-gradient-to-r from-[#283e56] to-[#4fc3f7] border-2 border-yellow-400 rounded-lg w-full justify-between shadow-md px-10 mx-auto items-center">
             <div className="p-1 flex items-center justify-center cursor-pointer">
               <img
@@ -154,6 +168,7 @@ function Profile() {
                 InterviewSim
               </h1>
             </div>
+            {/* Info bienvenida y foto de perfil */}
             <div className="flex items-center justify-center">
               <p className="text-xl font-bold text-gray-900 mr-5 hidden lg:block md:text-base">
                 {t("welcome", language)} {t("profile", language)} 👋❤️!
@@ -170,10 +185,12 @@ function Profile() {
               </div>
             </div>
           </div>
+          {/* Botón para redirigir según rol */}
           <button
             onClick={handleRedirect}
             className="rounded-full p-4 bg-gradient-to-r from-[#283e56] to-[#4fc3f7] shadow-md hover:scale-110 transform duration-200 ease-in-out"
           >
+          {/* Icono casa */}
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -200,10 +217,12 @@ function Profile() {
               role={role}
             />
           </div>
+          {/* Contenido principal: Info usuario y acciones */}
           <div className="w-full md:w-1/2 bg-gradient-to-r from-[#283e56] to-[#4fc3f7] rounded-xl p-12 shadow-lg overflow-y-auto text-white h-full flex flex-col justify-between">
             <Acciones />
           </div>
         </div>
+        {/* Botones inferiores */}
         <div className="bottom-0 w-full flex justify-center items-center  h-1/4 overflow-hidden">
           <Buttons />
         </div>

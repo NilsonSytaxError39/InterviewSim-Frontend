@@ -3,6 +3,19 @@ import { useEffect, useState } from "react";
 import { getGradesRequest, getGradesTeacherRequest } from "../../api/auth";
 import { useTheme } from "../../context/themeContext";
 import { t } from "../../i18n";
+/**
+ * Componente Acciones
+ *
+ * Este componente muestra las acciones (o calificaciones) relacionadas con el usuario
+ * autenticado, dependiendo de su rol (`student` o `teacher`).
+ *
+ * - Si el rol es **student**, obtiene sus calificaciones.
+ * - Si el rol es **teacher**, obtiene las acciones relacionadas con sus estudiantes.
+ *
+ * Se apoya en los contextos de autenticación (`useAuth`) y tema (`useTheme`),
+ * además de utilizar traducciones con la función `t`.
+ **/
+
 
 function Acciones() {
   const { user } = useAuth();
@@ -10,9 +23,17 @@ function Acciones() {
   const { language } = useTheme();
 
   useEffect(() => {
+    /**
+     * Función para obtener las acciones según el rol del usuario.
+     *
+     * - Llama a la API correspondiente (`getGradesRequest` o `getGradesTeacherRequest`).
+     * - Valida que la respuesta contenga los datos esperados (arrays).
+     * - Maneja errores y logs en consola en caso de fallas.
+     **/
     const traerAcciones = async () => {
       try {
         let response;
+        // Selección de la API según el rol del usuario
         if (user.role === "student") {
           response = await getGradesRequest(user.id, user.role);
         } else if (user.role === "teacher") {
@@ -26,7 +47,7 @@ function Acciones() {
         const data = response.data;
 
         console.log("Datos recibidos:", data);
-
+        // Validación de la estructura de los datos recibidos
         if (user.role === "student" && Array.isArray(data.calificaciones)) {
           setAcciones(data.calificaciones);
         } else if (user.role === "teacher" && Array.isArray(data.acciones)) {
@@ -43,7 +64,7 @@ function Acciones() {
         setAcciones([]);
       }
     };
-
+    // Ejecutar la función solo si el usuario tiene id y rol definidos
     if (user?.id && user?.role) {
       traerAcciones();
     }

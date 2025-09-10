@@ -3,11 +3,30 @@ import { useAuth } from "../../context/authContext";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/themeContext";
 import { t } from "../../i18n";
-
+/**
+ * Componente Buttons
+ *
+ * Renderiza un grupo de botones relacionados con la gestión de la cuenta de usuario:
+ * - **Eliminar perfil** → Llama a `deleteUser` con los datos del usuario.
+ * - **Editar perfil** → Redirige a la página de edición de perfil.
+ * - **Cerrar sesión** → Llama a `signout` y redirige al inicio.
+ *
+ * El componente utiliza:
+ * - `useAuth` → para acceder al usuario, cerrar sesión y eliminar cuenta.
+ * - `useNavigate` → para redirecciones.
+ * - `useTheme` + `t` → para traducciones dinámicas según idioma.
+ *
+ */
 function Buttons() {
   const { signout, deleteUser, user } = useAuth();
   const navigate = useNavigate();
   const { language } = useTheme();
+  /**
+   * Maneja el cierre de sesión del usuario.
+   *
+   * - Ejecuta `signout` para terminar la sesión.
+   * - Redirige al usuario a la página principal (`/`).
+   */
   const handleSignOut = async () => {
     try {
       await signout();
@@ -16,7 +35,13 @@ function Buttons() {
       console.error("Error al cerrar sesión:", error);
     }
   };
-
+  /**
+   * Maneja la eliminación del usuario actual.
+   *
+   * - Construye un objeto `userData` con `id` y `role`.
+   * - Llama a `deleteUser` desde el contexto.
+   */
+  
   const handleDeleteUser = async () => {
     const userData = {
       id: user.id,
