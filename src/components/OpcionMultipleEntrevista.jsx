@@ -10,6 +10,12 @@ import RecomendacionesIA from "./RecomendacionesIA";
 import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
 
+/**
+ * Componente para realizar entrevistas de opción múltiple.
+ * Permite responder preguntas, ver resultados, recomendaciones y un GIF motivacional.
+ * @param {{ IAresult: object, nombreEntrevista: string, dificultad: string, tipoEntrevista: string }} props
+ * @returns {JSX.Element}
+ */
 function ProblemaOpcionMultiple({
   IAresult,
   nombreEntrevista,
@@ -34,6 +40,12 @@ function ProblemaOpcionMultiple({
     programacion: t("programming", language),
   };
 
+
+  /**
+   * Maneja el cambio de opción seleccionada por el usuario en cada pregunta.
+   * @param {number} questionIndex - Índice de la pregunta
+   * @param {string} option - Opción seleccionada
+   */
   const handleRadioChange = (questionIndex, option) => {
     setRespuestaUser((prevState) => {
       const newState = [...prevState];
@@ -42,6 +54,10 @@ function ProblemaOpcionMultiple({
     });
   };
 
+
+  /**
+   * Envía las respuestas del usuario y obtiene recomendaciones de la IA.
+   */
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -79,6 +95,10 @@ function ProblemaOpcionMultiple({
     }
   };
 
+
+  /**
+   * Obtiene un GIF motivacional desde la API de Giphy cada 30 segundos.
+   */
   useEffect(() => {
     let isFetching = false;
 
@@ -109,10 +129,17 @@ function ProblemaOpcionMultiple({
     return () => clearInterval(intervalId);
   }, [apikey]);
 
+
+  /**
+   * Recarga la página para hacer otra entrevista.
+   */
   const handleHacerOtraEntrevista = () => {
     window.location.reload();
   };
 
+  /**
+   * Permite repetir la misma entrevista sin recargar la página.
+   */
   const handleRepetirEntrevista = () => {
     setResultado(null);
     setRespuestaUser([]);

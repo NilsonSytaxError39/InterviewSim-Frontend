@@ -1,3 +1,12 @@
+
+/**
+ * Componente ViewInterview
+ * Muestra la lista de entrevistas creadas por el profesor, permite eliminar entrevistas y muestra detalles relevantes.
+ * Utiliza hooks para autenticación, tema, traducción y llamadas a la API.
+ *
+ * @component
+ * @returns {JSX.Element} Panel visual con entrevistas y controles de edición/eliminación.
+ */
 import {
   getInterviewByTeacherRequest,
   deleteInterviewRequest,
@@ -10,17 +19,17 @@ import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
 
 function ViewInterview() {
-  const { user } = useAuth();
-  const [interviews, setInterviews] = useState([]);
-  const { i18n } = useTranslation();
-  const { language } = useTheme();
+  const { user } = useAuth(); // Obtiene el usuario autenticado
+  const [interviews, setInterviews] = useState([]); // Estado para la lista de entrevistas
+  const { i18n } = useTranslation(); // Hook para traducción
+  const { language } = useTheme();   // Hook para idioma
 
+  // Efecto para cargar entrevistas del profesor al montar el componente
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
         const userId = user.id;
-        console.log("userId", userId);
-
+        // Solicita las entrevistas del profesor actual
         const response = await getInterviewByTeacherRequest(userId, {
           headers: {
             "Cache-Control": "no-cache", // Deshabilita la caché
@@ -28,18 +37,18 @@ function ViewInterview() {
             Expires: "0",
           },
         });
-
-        // Asegúrate de actualizar el estado de las entrevistas
-        setInterviews(response.data);
-        console.log(response);
+        setInterviews(response.data); // Actualiza el estado con las entrevistas recibidas
       } catch (error) {
         console.error("Error fetching interviews:", error);
       }
     };
-
     fetchInterviews();
   }, [user.id]);
 
+  /**
+   * Elimina una entrevista y actualiza la lista.
+   * @param {string} id - ID de la entrevista a eliminar.
+   */
   const handleDelete = async (id) => {
     try {
       await deleteInterviewRequest(id);
@@ -61,32 +70,31 @@ function ViewInterview() {
     <>
       <div className="w-full h-full bg-gradient-to-r from-[#283e56] to-[#4fc3f7] rounded-xl overflow-y-auto p-4 scrollbar-yellow-viewinterview">
         <div className="flex flex-col w-full h-full p-5 space-y-5 overflow-y-auto">
+          {/* Mensaje si no hay entrevistas */}
           {interviews.length === 0 && (
-            <div className="flex justify-center items-center text-center  py-8 text-lg font-semibold h-full text-black dark:text-white">
+            <div className="flex justify-center items-center text-center py-8 text-lg font-semibold h-full text-black dark:text-white">
               {t("interviews_not_found", language)}
             </div>
           )}
+          {/* Renderiza cada entrevista */}
           {interviews.map((interview) => (
             <div
               key={interview.id}
-              className="flex flex-col  p-5 space-y-5 mb-5 bg-white dark:bg-gray-800 border border-[#ffd700] dark:border-yellow-600 rounded-lg shadow-sm  focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white"
+              className="flex flex-col p-5 space-y-5 mb-5 bg-white dark:bg-gray-800 border border-[#ffd700] dark:border-yellow-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white"
             >
               <h2 className="text-lg font-bold">{interview.title}</h2>
               <p>{interview.description}</p>
               <div className="space-y-2">
                 <p className="text-gray-500">
-                  {t("company", language)}:{" "}
-                  <strong className="uppercase">{interview.empresa}</strong>
+                  {t("company", language)}: <strong className="uppercase">{interview.empresa}</strong>
                 </p>
                 <p className="text-gray-500">
-                  {t("interview_type", language)}:{" "}
-                  <strong className="uppercase">
-                    {interview.tipoEntrevista}
-                  </strong>
+                  {t("interview_type", language)}: <strong className="uppercase">{interview.tipoEntrevista}</strong>
                 </p>
               </div>
               <div className="flex w-full justify-between items-center">
                 <div className="flex items-center justify-center space-x-5">
+                  {/* Botón para eliminar entrevista */}
                   <button
                     onClick={() => handleDelete(interview._id)}
                     className="bg-gradient-to-t from-red-600 to-red-500 rounded-lg p-2 flex items-center justify-center text-white"
@@ -107,6 +115,7 @@ function ViewInterview() {
                       />
                     </svg>
                   </button>
+                  {/* Botón para editar entrevista (sin funcionalidad implementada) */}
                   <button className="bg-gradient-to-t from-emerald-600 to-emerald-500 rounded-lg p-2 flex items-center justify-center text-white">
                     {t("edit_interview", language)}
                     <svg
@@ -125,10 +134,9 @@ function ViewInterview() {
                     </svg>
                   </button>
                 </div>
+                {/* Muestra la dificultad de la entrevista */}
                 <div className="flex space-x-1 items-center justify-center">
-                  <span className="text-gray-500">
-                    {t("difficulty", language)}
-                  </span>
+                  <span className="text-gray-500">{t("difficulty", language)}</span>
                   <p className="m-1"> {interview.Dificultad}</p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

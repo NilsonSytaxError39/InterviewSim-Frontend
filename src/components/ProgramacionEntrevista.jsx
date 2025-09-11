@@ -9,6 +9,12 @@ import { CalificacionRecomendacionProgramacion } from "../api/interview";
 import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
 
+/**
+ * Componente para entrevistas de programación.
+ * Permite escribir código, compilarlo, ver resultados y recomendaciones.
+ * @param {{ IAresult: object, nombreEntrevista: string, dificultad: number, tipoEntrevista: string }} props
+ * @returns {JSX.Element}
+ */
 const BottomCompilar = ({
   IAresult,
   nombreEntrevista,
@@ -33,12 +39,22 @@ const BottomCompilar = ({
   const RAPID_API_HOST = "judge0-ce.p.rapidapi.com";
   const RAPID_API_KEY = "17c467b0d1msh0080552d2fa86bfp10e7f1jsn42775aa94480";
 
+
+  /**
+   * Maneja el cambio en el editor de código.
+   * @param {string} action - Tipo de acción ("code")
+   * @param {string} data - Código fuente
+   */
   const onChange = (action, data) => {
     if (action === "code") {
       setCode(data);
     }
   };
 
+
+  /**
+   * Compila el código fuente usando la API Judge0 y consulta el resultado.
+   */
   const handleCompile = () => {
     setProcessing(true);
     const formData = {
@@ -75,6 +91,11 @@ const BottomCompilar = ({
       });
   };
 
+
+  /**
+   * Consulta el estado de la compilación y ejecución del código.
+   * @param {string} token - Token de la ejecución en Judge0
+   */
   const checkStatus = async (token) => {
     const options = {
       method: "GET",
@@ -110,6 +131,10 @@ const BottomCompilar = ({
     }
   };
 
+
+  /**
+   * Obtiene recomendaciones y calificación de la IA para el código fuente enviado.
+   */
   const fetchRecommendations = async () => {
     try {
       const respuestaUser = code;
@@ -146,6 +171,11 @@ const BottomCompilar = ({
     }
   };
 
+
+  /**
+   * Maneja el cambio de lenguaje de programación seleccionado.
+   * @param {object} selectedOption - Opción de lenguaje seleccionada
+   */
   const onSelectChange = (selectedOption) => {
     setSelectedLanguage(selectedOption);
     setCode("");

@@ -25,6 +25,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { language } = useTheme();
 
+  // Redirige al usuario según el rol autenticado
   useEffect(() => {
     if (isAuthenticated) {
       console.log("User role:", isAuthenticated);
@@ -36,6 +37,11 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, role]);
 
+  /**
+   * Maneja el envío del formulario de login.
+   * Realiza validaciones y llama a la función de autenticación.
+   * @param {Object} values - Valores del formulario.
+   */
   const onSubmit = async (values) => {
     if (!role) {
       setRoleError(t("role_required", language));
@@ -142,6 +148,7 @@ export default function LoginPage() {
                 {errors.password.message}
               </span>
             )}
+            {/* Icono para mostrar/ocultar contraseña */}
             <div
               className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer z-20"
               onClick={() => setPasswordVisible(!passwordVisible)}
@@ -198,6 +205,7 @@ export default function LoginPage() {
 
           {/* Selección de rol */}
           <div className="flex flex-wrap justify-around mb-6">
+            {/* Opción estudiante */}
             <div
               className={`flex items-center space-x-2 p-2 border rounded-lg cursor-pointer ${
                 role === "student"
@@ -221,6 +229,7 @@ export default function LoginPage() {
               <img src={Student} alt="Student" className="w-10 h-10" />
               <span className="font-semibold">{t("student", language)}</span>
             </div>
+            {/* Opción profesor */}
             <div
               className={`flex items-center space-x-2 p-2 border rounded-lg cursor-pointer ${
                 role === "teacher"
@@ -257,6 +266,7 @@ export default function LoginPage() {
             </span>
           )}
 
+          {/* Botón de login */}
           <button
             type="submit"
             className="w-full py-3 bg-[#283e56] text-[#ffd700] font-bold rounded-lg shadow-md border-2 border-[#ffd700] hover:bg-[#ffd700] hover:text-[#283e56] transition duration-200"
@@ -265,6 +275,7 @@ export default function LoginPage() {
           >
             {loading ? t("logging_in", language) : t("login", language)}
           </button>
+          {/* Enlaces de registro y recuperación de contraseña */}
           <div className="text-center  dark:text-white text-black mt-4">
             <p>
               {t("no_account", language)}{" "}

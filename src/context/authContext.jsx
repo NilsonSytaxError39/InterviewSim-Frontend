@@ -1,3 +1,11 @@
+
+/**
+ * Contexto de autenticación para la aplicación.
+ * Proporciona estado y funciones para login, registro, cierre de sesión y eliminación de usuario.
+ * Utiliza cookies y localStorage para persistencia del token.
+ *
+ * @module AuthContext
+ */
 import { createContext, useEffect, useState, useContext } from "react";
 import PropTypes from "prop-types";
 import Cookies from "js-cookie";
@@ -9,8 +17,15 @@ import {
   deleteUserRequest,
 } from "../api/auth.js";
 
+/**
+ * Contexto global para autenticación.
+ */
 export const AuthContext = createContext();
 
+/**
+ * Hook para acceder al contexto de autenticación.
+ * @throws Error si se usa fuera de AuthProvider.
+ */
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
@@ -19,12 +34,22 @@ export const useAuth = () => {
   return context;
 };
 
+/**
+ * Proveedor de autenticación.
+ * Maneja el estado de usuario, autenticación y errores, y expone funciones para login, registro, logout y eliminación.
+ * @param {Object} props
+ * @param {React.ReactNode} props.children - Componentes hijos envueltos por el proveedor.
+ * @returns {JSX.Element} Contexto de autenticación para la aplicación.
+ */
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [errorMesage, setErrorMesage] = useState(null);
+  const [user, setUser] = useState(null); // Estado del usuario autenticado
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticación
+  const [loading, setLoading] = useState(true); // Estado de carga
+  const [errorMesage, setErrorMesage] = useState(null); // Mensaje de error
 
+  /**
+   * Limpia la sesión y elimina el token.
+   */
   const cleanSession = () => {
     setUser(null);
     setIsAuthenticated(false);
@@ -33,11 +58,11 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("token");
   };
 
+  // Verifica el login al montar el componente
   useEffect(() => {
     const checkLogin = async () => {
       setLoading(true);
       const token = localStorage.getItem("token") || Cookies.get("token");
-
       try {
         if (!token) {
           cleanSession();
@@ -64,6 +89,11 @@ export const AuthProvider = ({ children }) => {
     checkLogin();
   }, []);
 
+  /**
+   * Inicia sesión con los datos de usuario.
+   * @param {Object} userData - Datos de usuario para login.
+   * @returns {Object} Resultado del login.
+   */
   const signin = async (userData) => {
     try {
       setLoading(true);
@@ -89,6 +119,11 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Registra un nuevo usuario.
+   * @param {Object} userData - Datos de usuario para registro.
+   * @returns {Object} Resultado del registro.
+   */
   const signup = async (userData) => {
     try {
       setLoading(true);
@@ -108,6 +143,9 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Cierra la sesión del usuario.
+   */
   const signout = async () => {
     try {
       await logoutRequest();
@@ -119,6 +157,10 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  /**
+   * Elimina el usuario actual.
+   * @param {Object} userData - Datos del usuario a eliminar.
+   */
   const deleteUser = async (userData) => {
     try {
       await deleteUserRequest(userData);

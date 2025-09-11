@@ -1,3 +1,4 @@
+
 import { useAuth } from "../context/authContext";
 import Logo from "../assets/Logo.png";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
@@ -6,12 +7,22 @@ import { useEffect, useState } from "react";
 import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
 
+/**
+ * Componente de barra de navegación principal.
+ * Muestra el logo, nombre de usuario, menú de usuario y opciones de navegación.
+ * @returns {JSX.Element}
+ */
+
+
 function Navbar() {
   const { user, signout } = useAuth();
   console.log("datos del usuario", user);
   const navigate = useNavigate();
   const { language } = useTheme();
 
+  /**
+   * Maneja el cierre de sesión del usuario y redirige al inicio.
+   */
   const handleSignOut = async () => {
     try {
       await signout();
@@ -21,8 +32,12 @@ function Navbar() {
     }
   };
 
-  const [profileImage, setProfileImage] = useState(Logo); // Valor por defecto
+  // Imagen de perfil del usuario (por defecto el logo)
+  const [profileImage, setProfileImage] = useState(Logo);
 
+  /**
+   * Carga la imagen de perfil según la primera letra del nombre de usuario.
+   */
   useEffect(() => {
     const loadImage = async () => {
       try {
@@ -40,10 +55,12 @@ function Navbar() {
     }
   }, [user]);
 
+  // Renderiza la barra de navegación principal
   return (
     <>
       <header className="flex items-center justify-center top-0 bg-gradient-to-r from-[#283e56] to-[#4fc3f7] shadow-md h-20 w-full md:px-6 rounded-lg border-b-4 border-[#ffd700]">
         <nav className="flex justify-between items-center w-full  px-6 mx-auto">
+          {/* Logo y nombre */}
           <div className="p-1 flex items-center justify-center cursor-pointer">
             <img
               src={Logo}
@@ -54,6 +71,7 @@ function Navbar() {
               InterviewSim
             </h1>
           </div>
+          {/* Menú de usuario */}
           <div className=" items-center space-x-14  md:flex">
             <Menu as="nav" className="relative z-10 ">
               {({ open }) => (
@@ -100,6 +118,7 @@ function Navbar() {
                   bg-white
                         dark:bg-gray-800 border border-[#ffd700] dark:border-yellow-600 rounded-lg shadow-sm  focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white"
                   >
+                    {/* Opción perfil */}
                     <MenuItem className="flex justify-between items-center hover:bg-gray-200 dark:hover:bg-gray-700">
                       {(active) => (
                         <Link
@@ -126,6 +145,7 @@ function Navbar() {
                         </Link>
                       )}
                     </MenuItem>
+                    {/* Opción configuración */}
                     <MenuItem className="flex justify-between items-center hover:bg-gray-200 dark:hover:bg-gray-700">
                       {(active) => (
                         <Link
@@ -157,6 +177,7 @@ function Navbar() {
                         </Link>
                       )}
                     </MenuItem>
+                    {/* Opción cerrar sesión */}
                     <MenuItem className="flex justify-between items-center hover:bg-gray-200 dark:hover:bg-gray-700">
                       {(active) => (
                         <Link

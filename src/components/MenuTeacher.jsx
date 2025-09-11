@@ -1,20 +1,35 @@
+
 import Logo from "../assets/Logo.png";
 import { useState } from "react";
 import Protypes from "prop-types";
 import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
 
+/**
+ * Componente de menú lateral para el rol de profesor.
+ * Permite seleccionar entre crear entrevista, ver entrevistas y ver estadísticas.
+ * @param {{ onMenuItemChange: function }} props - Función para manejar el cambio de opción de menú
+ * @returns {JSX.Element}
+ */
+
+
 function MenuTeacher({ onMenuItemChange }) {
   const [selectedMenuItem, setSelectedMenuItem] = useState("create");
   const { language } = useTheme();
 
+  /**
+   * Maneja el clic en una opción del menú y actualiza el estado.
+   * @param {string} menuItem - Opción seleccionada
+   */
   const handleMenuItemClick = (menuItem) => {
     onMenuItemChange(menuItem);
     setSelectedMenuItem(menuItem);
   };
 
+  // Renderiza el menú lateral con las opciones disponibles
   return (
     <div className="h-full rounded-lg flex flex-col items-center justify-center bg-[#283e56] p-8 shadow-xl">
+      {/* Logo y título */}
       <div className="p-4 flex items-center justify-center cursor-pointer mb-8">
         <img
           src={Logo}
@@ -25,7 +40,9 @@ function MenuTeacher({ onMenuItemChange }) {
           InterviewSim
         </h1>
       </div>
+      {/* Opciones de menú */}
       <div className="flex flex-col items-center justify-center w-full space-y-8">
+        {/* Crear entrevista */}
         <button
           onClick={() => handleMenuItemClick("create")}
           className={`px-6 py-4 flex items-center justify-center font-bold text-lg rounded-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 border-2 ${
@@ -50,6 +67,7 @@ function MenuTeacher({ onMenuItemChange }) {
           </svg>
           {t('create_interview', language)}
         </button>
+        {/* Ver entrevistas */}
         <button
           onClick={() => handleMenuItemClick("view")}
           className={`px-6 py-4 flex items-center justify-center font-bold text-lg rounded-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 border-2 ${
@@ -79,6 +97,7 @@ function MenuTeacher({ onMenuItemChange }) {
           </svg>
           {t('view_interviews', language)}
         </button>
+        {/* Ver estadísticas */}
         <button
           onClick={() => handleMenuItemClick("stats")}
           className={`px-6 py-4 flex items-center justify-center font-bold text-lg rounded-lg shadow-lg hover:scale-105 hover:shadow-xl transition-all duration-300 border-2 ${
@@ -110,6 +129,8 @@ function MenuTeacher({ onMenuItemChange }) {
 
 export default MenuTeacher;
 
+
+// Validación de tipos para las props
 MenuTeacher.propTypes = {
   onMenuItemChange: Protypes.func.isRequired,
 };

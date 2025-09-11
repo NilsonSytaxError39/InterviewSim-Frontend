@@ -1,13 +1,25 @@
+
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
+
+/**
+ * Componente para filtrar entrevistas por tipo de programación y dificultad.
+ * Permite seleccionar filtros y los envía al método fetchInterviews.
+ * @param {{ fetchInterviews: function }} props - Función para obtener entrevistas filtradas
+ * @returns {JSX.Element}
+ */
+
 
 function FiltersInterview({ fetchInterviews }) {
   const [selectedProgramming, setSelectedProgramming] = useState("");
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
   const { language } = useTheme();
 
+  /**
+   * Aplica los filtros seleccionados y llama a la función fetchInterviews.
+   */
   const handleFilter = () => {
     const filters = {
       programming: selectedProgramming,
@@ -16,13 +28,14 @@ function FiltersInterview({ fetchInterviews }) {
     fetchInterviews(filters);
   };
 
+  // Renderiza los filtros y el botón para aplicar
   return (
     <div className="flex flex-col space-y-6 bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md border border-gray-300 dark:border-gray-700">
       <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200 text-center">
         {t("filter_interviews", language)}
       </h2>
 
-      {/* Filtro por programación */}
+      {/* Filtro por tipo de programación */}
       <div className="flex flex-col space-y-2">
         <label
           htmlFor="programming"

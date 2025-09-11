@@ -4,11 +4,20 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function RecoveryPassword() {
+  // Estado para el email ingresado
   const [email, setEmail] = useState("");
+  // Estado para el rol seleccionado
   const [role, setRole] = useState("");
+  // Estado para el mensaje de respuesta
   const [message, setMessage] = useState("");
+  // Hook para navegación programática
   const navigate = useNavigate();
 
+  /**
+   * Envía la solicitud de recuperación de contraseña.
+   * Llama a la API y gestiona la respuesta y errores.
+   * @param {React.FormEvent} e - Evento de envío de formulario.
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -25,6 +34,9 @@ function RecoveryPassword() {
     }
   };
 
+  /**
+   * Navega hacia atrás en el historial del navegador.
+   */
   const Back = () => {
     window.history.back();
   };
@@ -58,6 +70,7 @@ function RecoveryPassword() {
           Recuperar Contraseña
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Campo de email */}
           <input
             type="email"
             placeholder="Correo electrónico"
@@ -67,6 +80,7 @@ function RecoveryPassword() {
             className="w-full px-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600 bg-white text-[#283e56] focus:outline-none focus:ring-2 focus:ring-[#ffd700] focus:border-transparent"
             aria-label="Ingresa tu correo electrónico"
           />
+          {/* Selección de rol */}
           <select
             value={role}
             onChange={(e) => setRole(e.target.value)}
@@ -78,6 +92,7 @@ function RecoveryPassword() {
             <option value="student">Estudiante</option>
             <option value="teacher">Profesor</option>
           </select>
+          {/* Botón de envío */}
           <button
             type="submit"
             className="w-full py-2 bg-[#283e56] text-[#ffd700] font-bold rounded-lg hover:bg-[#ffd700] hover:text-[#283e56] transition"
@@ -85,6 +100,7 @@ function RecoveryPassword() {
             Enviar
           </button>
         </form>
+        {/* Mensaje de respuesta */}
         {message && <p className="text-center mt-4">{message}</p>}
       </div>
     </div>

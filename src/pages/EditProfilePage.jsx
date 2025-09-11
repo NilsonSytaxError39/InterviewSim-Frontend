@@ -12,6 +12,7 @@ export default function EditProfilePage() {
   const navigate = useNavigate();
   const { language } = useTheme();
 
+  // Estado para los campos del perfil
   const [profileImage, setProfileImage] = useState(Logo);
   const [newName, setNewName] = useState("");
   const [email, setEmail] = useState("");
@@ -22,6 +23,7 @@ export default function EditProfilePage() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
 
+  // Carga la imagen de perfil según la inicial del nombre de usuario
   useEffect(() => {
     const loadImage = async () => {
       try {
@@ -36,6 +38,7 @@ export default function EditProfilePage() {
     if (user?.userName) loadImage();
   }, [user]);
 
+  // Sincroniza los campos del formulario con los datos del usuario
   useEffect(() => {
     setNewName(user.userName);
     setEmail(user.email);
@@ -43,6 +46,10 @@ export default function EditProfilePage() {
     setPreviewPhoto(profileImage);
   }, [user, profileImage]);
 
+  /**
+   * Maneja el cambio de foto de perfil.
+   * @param {Event} e - Evento de input file.
+   */
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -53,9 +60,13 @@ export default function EditProfilePage() {
     }
   };
 
+  /**
+   * Maneja el guardado de cambios en el perfil.
+   * Realiza validaciones y envía los datos al backend.
+   * @param {Event} e - Evento de submit del formulario.
+   */
   const handleSaveChanges = async (e) => {
     e.preventDefault();
-
     // Validaciones
     if (!newName) {
       toast.error(t("name_required", language));
@@ -69,17 +80,13 @@ export default function EditProfilePage() {
       toast.error(t("passwords_no_match", language));
       return;
     }
-
     setLoadingEdit(true);
-
     // Crear FormData
     const formData = new FormData();
     formData.append("userName", newName);
     formData.append("email", email);
-
     if (newPhoto) formData.append("photo", newPhoto);
     if (password) formData.append("password", password);
-
     try {
       // Enviar la solicitud al backend
       const response = await updateProfileRequest(formData);

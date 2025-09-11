@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { getInterviewsRequest } from "../api/interview";
 import { Link } from "react-router-dom";
@@ -6,11 +7,23 @@ import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
 import FiltersInterview from "./FiltersInterview";
 
+/**
+ * Componente que muestra el panel de entrevistas disponibles.
+ * Permite filtrar entrevistas y navegar a la entrevista seleccionada.
+ * @returns {JSX.Element}
+ */
+
+
 function PanelInterviews() {
   const [interviews, setInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const { language } = useTheme();
 
+  /**
+   * Obtiene las entrevistas desde la API, aplicando filtros si se proporcionan.
+   * Actualiza el estado local con los datos recibidos.
+   * @param {object} filters - Filtros para la consulta de entrevistas
+   */
   const fetchInterviews = async (filters = {}) => {
     setLoading(true);
     try {
@@ -26,10 +39,12 @@ function PanelInterviews() {
     }
   };
 
+  // Carga inicial de entrevistas sin filtros
   useEffect(() => {
-    fetchInterviews(); // Carga inicial sin filtros
+    fetchInterviews();
   }, []);
 
+  // Muestra spinner mientras se cargan los datos
   if (loading) {
     return (
       <div className="flex justify-center items-center w-full h-full min-h-screen relative">
@@ -38,10 +53,13 @@ function PanelInterviews() {
     );
   }
 
+  // Renderiza el panel de entrevistas y los filtros
   return (
     <div className="flex h-full w-full bg-gradient-to-r from-[#283e56] to-[#4fc3f7] rounded-lg overflow-hidden">
       <div className="flex flex-col w-full h-full p-5 space-y-5 overflow-y-auto panel-interviews-scroll">
+        {/* Filtros para entrevistas */}
         <FiltersInterview fetchInterviews={fetchInterviews} />
+        {/* Listado de entrevistas */}
         {interviews.map((interview) => (
           <div
             key={interview._id}
@@ -58,6 +76,7 @@ function PanelInterviews() {
               </p>
             </div>
             <div className="flex w-full justify-between items-center">
+              {/* Enlace para realizar la entrevista */}
               <Link
                 to={`/interview/${interview._id}`}
                 rel="noreferrer"

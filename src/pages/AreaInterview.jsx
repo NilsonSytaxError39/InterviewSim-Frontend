@@ -1,3 +1,12 @@
+
+/**
+ * Componente AreaInterview
+ * Muestra el área principal de la entrevista, cargando los datos y renderizando el tipo de entrevista correspondiente.
+ * Utiliza hooks para obtener el id de la entrevista, cargar datos y mostrar spinner mientras carga.
+ *
+ * @component
+ * @returns {JSX.Element} Panel visual con la entrevista y controles de navegación.
+ */
 import { useEffect, useState } from "react";
 import { getInterviewByIdRequest } from "../api/interview";
 import { Link, useParams } from "react-router-dom";
@@ -7,11 +16,12 @@ import ProgramacionEntrevista from "../components/ProgramacionEntrevista.jsx";
 import Spinner from "../components/spinner.jsx";
 
 function AreaInterview() {
-  const { id } = useParams();
-  const [interview, setInterview] = useState({});
-  const [IAresult, setIAresult] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { id } = useParams(); // Obtiene el id de la entrevista desde la URL
+  const [interview, setInterview] = useState({}); // Estado para los datos de la entrevista
+  const [IAresult, setIAresult] = useState([]);   // Estado para los resultados de IA
+  const [loading, setLoading] = useState(true);   // Estado de carga
 
+  // Efecto para cargar los datos de la entrevista al montar el componente
   useEffect(() => {
     const fetchInterview = async () => {
       try {
@@ -27,14 +37,17 @@ function AreaInterview() {
         setLoading(false);
       }
     };
-
     fetchInterview();
   }, [id]);
 
+  /**
+   * Navega hacia atrás en el historial del navegador.
+   */
   const Back = () => {
     window.history.back();
   };
 
+  // Muestra spinner mientras se cargan los datos
   if (loading) {
     return <Spinner />;
   }
@@ -42,6 +55,7 @@ function AreaInterview() {
   return (
     <div className="h-screen w-full p-5 bg-[#cbe2fe] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
       <div className="flex flex-col items-start h-full">
+        {/* Barra superior con logo, título y botones de navegación */}
         <div className="w-full flex flex-row justify-between items-center rounded-lg space-x-4 lg:space-x-6 mx-auto ">
           <button
             onClick={Back}
@@ -102,6 +116,7 @@ function AreaInterview() {
             </svg>
           </Link>
         </div>
+        {/* Renderiza el tipo de entrevista correspondiente */}
         <div className="w-full flex flex-col lg:flex-row  lg:space-y-0 lg:space-x-5 h-full overflow-hidden mt-5">
           <div className="w-full flex flex-col space-y-5 h-full">
             {interview.tipoEntrevista === "programacion" && (

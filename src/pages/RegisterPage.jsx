@@ -10,7 +10,16 @@ import { useTheme } from "../context/themeContext";
 import { t } from "../i18n";
 import { toast } from "react-toastify";
 
+/**
+ * Componente RegisterPage
+ * Muestra el formulario de registro de usuario, validando los campos y rol, y mostrando mensajes de error o éxito.
+ * Permite alternar la visibilidad de la contraseña y redirige al login tras el registro exitoso.
+ *
+ * @component
+ * @returns {JSX.Element} Página de registro para InterviewSim.
+ */
 export default function RegisterPage() {
+  // Hook para el formulario
   const {
     register,
     handleSubmit,
@@ -18,14 +27,26 @@ export default function RegisterPage() {
     setError,
     clearErrors,
   } = useForm();
+  // Estado para mostrar/ocultar contraseña
   const [passwordVisible, setPasswordVisible] = useState(false);
+  // Estado para el rol seleccionado
   const [role, setRole] = useState(null);
+  // Función de registro del contexto de autenticación
   const { signup } = useAuth();
+  // Hook para navegación programática
   const navigate = useNavigate();
+  // Estado para errores de rol
   const [roleError, setRoleError] = useState("");
+  // Estado para mostrar spinner de carga
   const [loading, setLoading] = useState(false);
+  // Idioma actual
   const { language } = useTheme();
 
+  /**
+   * Maneja el envío del formulario de registro.
+   * Realiza validaciones y llama a la función de registro.
+   * @param {Object} values - Valores del formulario.
+   */
   const onSubmit = handleSubmit(async (values) => {
     if (!role) {
       setRoleError(t("role_required", language));
@@ -68,7 +89,9 @@ export default function RegisterPage() {
             {t("register_title", language)}
           </h1>
         </div>
-        <form onSubmit={onSubmit} className="space-y-6">
+  {/* Formulario de registro */}
+  <form onSubmit={onSubmit} className="space-y-6">
+          {/* Campo de nombre de usuario */}
           <div className="relative mb-4">
             <label htmlFor="userName" className="sr-only">
               Usuario
@@ -107,6 +130,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
+          {/* Campo de email */}
           <div className="relative mb-4">
             <label htmlFor="email" className="sr-only">
               Email
@@ -149,6 +173,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
+          {/* Campo de contraseña */}
           <div className="relative mb-4">
             <label htmlFor="password" className="sr-only">
               Contraseña
@@ -213,6 +238,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
+          {/* Selección de rol */}
           <div className="flex flex-wrap justify-around mb-2">
             <div
               className={`flex items-center space-x-2 p-2 border rounded-lg cursor-pointer ${
@@ -261,18 +287,21 @@ export default function RegisterPage() {
               <span className="font-semibold">{t("teacher", language)}</span>
             </div>
           </div>
+          {/* Mensaje de error de rol */}
           {roleError && (
             <span className="text-red-500 text-xs block text-center mb-2">
               {t("role_required", language)}
             </span>
           )}
 
+          {/* Mensaje de error de la API */}
           {errors.apiError && (
             <span className="text-red-500 text-xs block text-center mb-2">
               {errors.apiError.message}
             </span>
           )}
 
+          {/* Botón de registro */}
           <button
             type="submit"
             className="w-full px-4 py-3 text-sm font-bold text-[#ffd700] bg-[#283e56] rounded-lg shadow-md border-2 border-[#ffd700] hover:bg-[#ffd700] hover:text-[#283e56] transition duration-200"
@@ -282,7 +311,8 @@ export default function RegisterPage() {
             {loading ? t("registering", language) : t("register", language)}
           </button>
         </form>
-        <div className="text-center  dark:text-white text-black mt-4">
+  {/* Enlace para usuarios que ya tienen cuenta */}
+  <div className="text-center  dark:text-white text-black mt-4">
           {t("already_have_account", language)}{" "}
           <Link
             to={"/login"}

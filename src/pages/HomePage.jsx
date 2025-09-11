@@ -8,10 +8,12 @@ export default function HomePage() {
   const { language, changeLanguage } = useTheme();
   return (
     <div className="relative h-screen flex w-full flex-col justify-center items-center overflow-hidden">
+      {/* Fondo visual y gradiente */}
       <div className="absolute inset-0">
         <img src={Fondo} alt="Fondo" className="w-full h-full object-cover opacity-20" />
       </div>
       <div className="absolute inset-0 bg-gradient-to-br from-[#283e56] via-[#4fc3f7] to-[#283e56] opacity-95"></div>
+      {/* Panel principal con logo, título y acciones */}
       <div className="relative z-10 flex flex-col items-center text-center text-[#283e56] p-6 bg-white bg-opacity-95 rounded-xl max-w-lg mx-4 sm:mx-8 lg:mx-16 shadow-lg border-2 border-[#ffd700]" style={{boxShadow: '0 8px 32px 0 rgba(40,62,86,0.25)'}}>
         <div className="bg-white rounded-full p-3 animate-jump-in mb-4 shadow-md border-2 border-[#ffd700]">
           <img src={Logo} alt="Logo" className="w-40 h-40 md:w-32 md:h-32" />
@@ -19,6 +21,7 @@ export default function HomePage() {
         <h1 className="text-5xl md:text-7xl font-bold mb-4 animate-jump text-black">
           InterviewSim
         </h1>
+        {/* Selector de idioma */}
         <div className="flex justify-end w-full mb-2">
           <select
             value={language}
@@ -29,9 +32,11 @@ export default function HomePage() {
             <option value="en">English</option>
           </select>
         </div>
+        {/* Descripción de la app */}
         <p className="bg-white bg-opacity-80 text-black p-4 rounded-lg text-base md:text-lg max-w-md mx-auto shadow border-l-4 border-[#ffd700]">
           {t('homepage_paragraph', language)}
         </p>
+        {/* Botones de login y registro */}
         <div className="flex flex-col sm:flex-row sm:space-x-8 mt-6">
           <Link
             to={"/login"}
@@ -49,6 +54,7 @@ export default function HomePage() {
           </Link>
         </div>
       </div>
+      {/* Footer legal */}
       <footer className="absolute bottom-0 left-0 w-full text-black dark:text-white flex justify-center items-center bg-opacity-60 p-2">
         <p className="text-xs sm:text-sm text-center">
           © 2024 InterviewSim. All rights reserved.
