@@ -119,9 +119,7 @@ function CreateInterview() {
                 name="description"
                 id="description"
                 className="w-full text-center p-2 text-sm font-semibold bg-white dark:bg-gray-800 border border-[#ffd700] dark:border-yellow-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white resize-none"
-                {...register("description", {
-                  required: t("interview_description_required", language),
-                })}
+                {...register("description")}
                 placeholder={t("interview_description", language)}
                 onChange={() => clearErrors("description")}
               />
