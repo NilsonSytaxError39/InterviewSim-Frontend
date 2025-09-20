@@ -227,7 +227,7 @@ export default function LoginPage() {
                 readOnly
               />
               <img src={Student} alt="Student" className="w-10 h-10" />
-              <span className="font-semibold">{t("student", language)}</span>
+              <span className="text-gray-700 font-semibold dark:text-white">{t("student", language)}</span>
             </div>
             {/* Opción profesor */}
             <div
@@ -251,7 +251,7 @@ export default function LoginPage() {
                 readOnly
               />
               <img src={Teacher} alt="Teacher" className="w-10 h-10" />
-              <span className="font-semibold">{t("teacher", language)}</span>
+              <span className="font-semibold dark:text-white">{t("teacher", language)}</span>
             </div>
           </div>
           {roleError && (

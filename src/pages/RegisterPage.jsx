@@ -260,9 +260,7 @@ export default function RegisterPage() {
                 readOnly
               />
               <img src={Student} alt="Student" className="w-10 h-10" />
-              <span className="text-gray-700 font-semibold">
-                {t("student", language)}
-              </span>
+              <span className="text-gray-700 font-semibold dark:text-white">{t("student", language)}</span>
             </div>
             <div
               className={`flex items-center space-x-2 p-2 border rounded-lg cursor-pointer ${
@@ -284,7 +282,7 @@ export default function RegisterPage() {
                 readOnly
               />
               <img src={Teacher} alt="Teacher" className="w-10 h-10" />
-              <span className="font-semibold">{t("teacher", language)}</span>
+              <span className="font-semibold dark:text-white">{t("teacher", language)}</span>
             </div>
           </div>
           {/* Mensaje de error de rol */}

@@ -66,7 +66,7 @@ function PanelInterviews() {
             className="flex flex-col bg-white dark:bg-gray-800 border border-[#ffd700] dark:border-yellow-600 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white p-3 rounded-lg space-y-3"
           >
             <h2 className="text-lg font-bold">{interview.title}</h2>
-            <p>{interview.description}</p>
+            <p style={{ whiteSpace: 'pre-line' }}>{interview.description}</p>
             <div className="space-y-2">
               <p className="text-gray-700">
                 {t("company", language)}: {interview.empresa}

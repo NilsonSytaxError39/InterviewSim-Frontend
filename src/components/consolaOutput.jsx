@@ -88,7 +88,7 @@ const ConsolaOutput = ({ outputDetails }) => {
   // Renderiza el resultado en un contenedor estilizado
   return (
     <div className="w-full h-full rounded-md text-white font-normal text-sm overflow-y-auto bg-custom-bg flex flex-col">
-      <p className="p-3 whitespace-pre-wrap">
+      <p className="p-3" style={{ whiteSpace: 'pre-line' }}>
         <span className="ml-2">Resultado de la compilación:</span> {getOutput()}
       </p>
     </div>

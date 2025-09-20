@@ -83,7 +83,17 @@ function ViewInterview() {
               className="flex flex-col p-5 space-y-5 mb-5 bg-white dark:bg-gray-800 border border-[#ffd700] dark:border-yellow-600 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white"
             >
               <h2 className="text-lg font-bold">{interview.title}</h2>
-              <p>{interview.description}</p>
+              <p style={{ whiteSpace: 'pre-line' }}>{interview.description}</p>
+              {interview.examples && (
+                <div className="mt-2 p-2 bg-gray-100 dark:bg-gray-700 rounded">
+                  {interview.examples.input && (
+                    <div><strong>Ejemplo de entrada:</strong><br />{interview.examples.input}</div>
+                  )}
+                  {interview.examples.output && (
+                    <div className="mt-1"><strong>Ejemplo de salida:</strong><br />{interview.examples.output}</div>
+                  )}
+                </div>
+              )}
               <div className="space-y-2">
                 <p className="text-gray-500">
                   {t("company", language)}: <strong className="uppercase">{interview.empresa}</strong>

@@ -17,17 +17,28 @@ import EditProfilePage from "./pages/EditProfilePage";
 import RecoveryPassword from "./pages/recoveryPassword";
 import ResetPassword from "./pages/resertPassword";
 
+
+/**
+ * Componente principal App
+ * Gestiona el enrutamiento, contexto de autenticación y tema, y muestra el spinner de carga inicial.
+ * Incluye rutas protegidas y públicas, y el contenedor de notificaciones.
+ *
+ * @component
+ * @returns {JSX.Element} Estructura principal de la aplicación InterviewSim.
+ */
 function App() {
+  // Estado para mostrar el spinner de carga inicial
   const [loading, setLoading] = useState(true);
 
+  // Efecto para simular carga inicial
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
     }, 3000);
-
     return () => clearTimeout(timer);
   }, []);
 
+  // Renderiza spinner mientras carga, luego la app completa
   return loading ? (
     <div className="flex justify-center items-center min-h-screen">
       <Spinner />
@@ -38,6 +49,7 @@ function App() {
         <div className="min-h-screen w-full bg-gradient-to-br from-blue-200 via-rose-100 to-orange-100 dark:from-gray-800 dark:via-gray-700 dark:to-gray-900">
           <AuthProvider>
             <Routes>
+              {/* Rutas públicas */}
               <Route path="/" element={<HomePage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
@@ -55,6 +67,7 @@ function App() {
                 <Route path="/edit-profile" element={<EditProfilePage />} />
               </Route>
             </Routes>
+            {/* Contenedor de notificaciones */}
             <ToastContainer
               position="bottom-right"
               autoClose={3000}
