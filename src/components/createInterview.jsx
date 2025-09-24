@@ -38,8 +38,13 @@ function CreateInterview() {
     setLoading(true);
     const userId = user.id;
     try {
+      // Si la descripción está vacía, asigna un texto generado automáticamente
+      let description = values.description;
+      if (!description || description.trim() === "") {
+        description = "No se proporcionó una descripción, será generada automáticamente por la IA.";
+      }
       // Construye el objeto de datos para enviar
-      const data = { ...values, userId, tipoEntrevista };
+      const data = { ...values, description, userId, tipoEntrevista };
       console.log("Datos enviados:", data);
       await createInterviewRequest(data);
       toast.success(t("interview_created_success", language));
@@ -58,13 +63,16 @@ function CreateInterview() {
   };
 
   // Renderiza el formulario de creación de entrevista y la imagen decorativa
+  // Expresión regular para permitir solo letras, números, espacios y algunos signos de puntuación básicos
+  const validTextRegex = /^[\w\s.,:;¡!¿?()\-áéíóúÁÉÍÓÚñÑ]+$/;
+
   return (
     <div className="h-full w-full flex overflow-hidden space-x-5 items-center justify-center">
       {/* Imagen decorativa */}
       <div className="w-1/2 h-full bg-cover bg-center rounded-lg">
         <img
           src="https://coderslink.com/wp-content/uploads/2023/06/Entrevista-Tecnica-Animado.jpeg"
-          alt="Crear Entrevista"
+          alt="Live Coding"
           className="w-full h-full object-cover rounded-lg"
         />
       </div>
@@ -96,6 +104,18 @@ function CreateInterview() {
                 className="w-full px-4 py-3 text-sm font-semibold bg-white dark:bg-gray-800 border border-[#ffd700] dark:border-yellow-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-center text-[#283e56] dark:text-white"
                 {...register("title", {
                   required: t("interview_title_required", language),
+                  minLength: {
+                    value: 5,
+                    message: t("El título debe tener al menos 5 caracteres.", language) || "El título debe tener al menos 5 caracteres."
+                  },
+                  maxLength: {
+                    value: 100,
+                    message: t("El título no debe superar los 100 caracteres.", language) || "El título no debe superar los 100 caracteres."
+                  },
+                  validate: {
+                    notOnlySpaces: v => v.trim().length > 0 || t("no_only_spaces", language) || "No puede ser solo espacios.",
+                    validChars: v => validTextRegex.test(v) || t("invalid_characters", language) || "Caracteres no permitidos."
+                  }
                 })}
                 placeholder={t("interview_title", language)}
                 aria-label={t("interview_title", language)}
@@ -119,7 +139,20 @@ function CreateInterview() {
                 name="description"
                 id="description"
                 className="w-full text-center p-2 text-sm font-semibold bg-white dark:bg-gray-800 border border-[#ffd700] dark:border-yellow-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white resize-none"
-                {...register("description")}
+                {...register("description", {
+                  minLength: {
+                    value: 10,
+                    message: t("La descripción debe tener al menos 10 caracteres.", language) || "La descripción debe tener al menos 10 caracteres."
+                  },
+                  maxLength: {
+                    value: 500,
+                    message: t("La descripción no debe superar los 500 caracteres.", language) || "La descripción no debe superar los 500 caracteres."
+                  },
+                  validate: {
+                    notOnlySpaces: v => !v || v.trim().length === 0 || validTextRegex.test(v) ? true : (t("invalid_characters", language) || "Caracteres no permitidos."),
+                    validChars: v => !v || validTextRegex.test(v) || t("invalid_characters", language) || "Caracteres no permitidos."
+                  }
+                })}
                 placeholder={t("interview_description", language)}
                 onChange={() => clearErrors("description")}
               />
@@ -144,6 +177,18 @@ function CreateInterview() {
                 className="w-full text-center px-3 py-2 text-sm font-semibold bg-white dark:bg-gray-800 border border-[#ffd700] dark:border-yellow-600 rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white"
                 {...register("empresa", {
                   required: t("company_required", language),
+                  minLength: {
+                    value: 2,
+                    message: t("El nombre de la empresa debe tener al menos 2 caracteres.", language) || "El nombre de la empresa debe tener al menos 2 caracteres."
+                  },
+                  maxLength: {
+                    value: 100,
+                    message: t("El nombre de la empresa no debe superar los 100 caracteres.", language) || "El nombre de la empresa no debe superar los 100 caracteres."
+                  },
+                  validate: {
+                    notOnlySpaces: v => v.trim().length > 0 || t("no_only_spaces", language) || "No puede ser solo espacios.",
+                    validChars: v => validTextRegex.test(v) || t("invalid_characters", language) || "Caracteres no permitidos."
+                  }
                 })}
                 placeholder={t("company", language)}
                 onChange={() => clearErrors("empresa")}

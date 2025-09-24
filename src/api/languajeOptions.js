@@ -131,5 +131,11 @@ export const languageOptions = [
     name: "Tcl (8.6)",
     label: "Tcl (8.6)",
     value: "tcl",
+  },
+  {
+  id: 5001,
+  name: "GNU Bash",
+  label: "GNU Bash (Bourne Again Shell)",
+  value: "gnu-bash"
   }
 ];

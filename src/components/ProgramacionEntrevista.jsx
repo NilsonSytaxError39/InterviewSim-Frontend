@@ -288,7 +288,35 @@ const BottomCompilar = ({
               options={languageOptions}
               value={selectedLanguage}
               onChange={onSelectChange}
-              className="w-1/3 border-2 border-white rounded-md p-1 bg-gradient-to-t from-blue-500 to-blue-400"
+              className="w-1/3 border-2 rounded-md p-1 bg-gradient-to-t from-blue-500 to-blue-400 dark:from-gray-800 dark:to-gray-700 dark:border-yellow-600"
+              styles={{
+                control: (base, state) => ({
+                  ...base,
+                  backgroundColor: document.documentElement.classList.contains('dark') ? '#23272f' : '#3b82f6',
+                  borderColor: document.documentElement.classList.contains('dark') ? '#ffd600' : '#fff',
+                  color: document.documentElement.classList.contains('dark') ? '#fff' : '#fff',
+                  boxShadow: state.isFocused ? '0 0 0 2px #60a5fa' : base.boxShadow,
+                }),
+                singleValue: (base) => ({
+                  ...base,
+                  color: document.documentElement.classList.contains('dark') ? '#fff' : '#fff',
+                }),
+                menu: (base) => ({
+                  ...base,
+                  backgroundColor: document.documentElement.classList.contains('dark') ? '#23272f' : '#fff',
+                  color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                }),
+                option: (base, state) => ({
+                  ...base,
+                  backgroundColor: state.isSelected
+                    ? (document.documentElement.classList.contains('dark') ? '#374151' : '#60a5fa')
+                    : state.isFocused
+                    ? (document.documentElement.classList.contains('dark') ? '#4b5563' : '#bfdbfe')
+                    : (document.documentElement.classList.contains('dark') ? '#23272f' : '#fff'),
+                  color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                  cursor: 'pointer',
+                }),
+              }}
             />
             <button
               onClick={handleCompile}
