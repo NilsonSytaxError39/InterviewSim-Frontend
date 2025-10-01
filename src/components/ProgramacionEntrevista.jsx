@@ -201,13 +201,18 @@ const BottomCompilar = ({
               >
                 {questions.length > 0 ? (
                   questions.map((question, index) => (
-                    <div
-                      key={index}
-                      className="w-full border-4 text-center p-6 rounded-lg space-y-4 mx-auto"
-                    >
+                    <div key={index} className="w-full border-4 text-center p-6 rounded-lg space-y-4 mx-auto">
                       <h3 className="text-xl font-bold ">
                         {question.question}
                       </h3>
+                      {question.examples && (
+                        <div className="text-left bg-gray-100 p-4 rounded-md">
+                          <p className="font-semibold">Ejemplo de entrada:</p>
+                          <pre className="bg-gray-200 p-2 rounded">{question.examples.input}</pre>
+                          <p className="font-semibold mt-2">Ejemplo de salida:</p>
+                          <pre className="bg-gray-200 p-2 rounded">{question.examples.output}</pre>
+                        </div>
+                      )}
                     </div>
                   ))
                 ) : (
@@ -215,6 +220,7 @@ const BottomCompilar = ({
                     {t("nothin_questions", language)}
                   </p>
                 )}
+
               </div>
             </div>
           </div>
@@ -311,8 +317,8 @@ const BottomCompilar = ({
                   backgroundColor: state.isSelected
                     ? (document.documentElement.classList.contains('dark') ? '#374151' : '#60a5fa')
                     : state.isFocused
-                    ? (document.documentElement.classList.contains('dark') ? '#4b5563' : '#bfdbfe')
-                    : (document.documentElement.classList.contains('dark') ? '#23272f' : '#fff'),
+                      ? (document.documentElement.classList.contains('dark') ? '#4b5563' : '#bfdbfe')
+                      : (document.documentElement.classList.contains('dark') ? '#23272f' : '#fff'),
                   color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
                   cursor: 'pointer',
                 }),
