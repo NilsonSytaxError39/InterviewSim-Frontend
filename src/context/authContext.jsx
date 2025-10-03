@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
             return;
           }
           setUser(response.data);
-          setIsAuthenticated(true);
+          setIsAuthenticated(response.data.role); // CAMBIO: Guardar el rol
           setErrorMesage(null);
         }
       } catch (error) {
@@ -88,12 +88,12 @@ export const AuthProvider = ({ children }) => {
     };
     checkLogin();
   }, []);
-
+  
   /**
-   * Inicia sesión con los datos de usuario.
-   * @param {Object} userData - Datos de usuario para login.
-   * @returns {Object} Resultado del login.
-   */
+ * Inicia sesión con los datos de usuario.
+ * @param {Object} userData - Datos de usuario para login.
+ * @returns {Object} Resultado del login.
+ */
   const signin = async (userData) => {
     try {
       setLoading(true);
@@ -104,10 +104,10 @@ export const AuthProvider = ({ children }) => {
         return { error: true, message: response.data.message };
       }
       setUser(response.data);
-      setIsAuthenticated(true);
+      setIsAuthenticated(response.data.role); // CAMBIO: Guardar el rol en lugar de true
       setErrorMesage(null);
       localStorage.setItem("token", response.data.tokenSession);
-      return { error: false, message: "Inicio de sesión exitoso" };
+      return { error: false, message: "Inicio de sesión exitoso", role: response.data.role };
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message

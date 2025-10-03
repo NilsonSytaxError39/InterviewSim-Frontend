@@ -30,3 +30,22 @@ export const TeacherRoute = () => {
   if (user?.role !== "teacher") return <Navigate to="/" replace />;
   return <Outlet />;
 };
+
+// Ruta pública (solo para usuarios NO autenticados)
+export const PublicRoute = () => {
+  const { user, isAuthenticated, loading } = useAuth();
+
+  if (loading) return <Spinner />;
+
+  // Si está autenticado, redirigir según el rol
+  if (isAuthenticated) {
+    if (user?.role === "student") {
+      return <Navigate to="/student" replace />;
+    } else if (user?.role === "teacher") {
+      return <Navigate to="/teacher" replace />;
+    }
+  }
+
+  // Si no está autenticado, mostrar la página pública
+  return <Outlet />;
+};

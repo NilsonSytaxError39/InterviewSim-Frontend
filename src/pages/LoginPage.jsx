@@ -28,15 +28,19 @@ export default function LoginPage() {
   // Redirige al usuario según el rol autenticado
   useEffect(() => {
     if (isAuthenticated) {
-      console.log("User role:", isAuthenticated);
-      if (role === "student") {
-        window.location.replace("/student");
-      } else if (role === "teacher") {
-        window.location.replace("/teacher");
-      }
-    }
-  }, [isAuthenticated, role]);
+      console.log("User authenticated with role:", isAuthenticated);
+      // Usar un pequeño delay para asegurar que el estado se haya actualizado completamente
+      const timer = setTimeout(() => {
+        if (isAuthenticated === "student") {
+          window.location.replace("/student");
+        } else if (isAuthenticated === "teacher") {
+          window.location.replace("/teacher");
+        }
+      }, 100);
 
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated]);
   /**
    * Maneja el envío del formulario de login.
    * Realiza validaciones y llama a la función de autenticación.
@@ -207,16 +211,19 @@ export default function LoginPage() {
           <div className="flex flex-wrap justify-around mb-6">
             {/* Opción estudiante */}
             <div
-              className={`flex items-center space-x-2 p-2 border rounded-lg cursor-pointer ${
-                role === "student"
-                  ? "border-2 border-[#4fc3f7] bg-[#e3f7fd] text-[#283e56]"
-                  : "border-2 border-[#ffd700] text-black"
-              }`}
-              onClick={() => {
+              className={`flex items-center space-x-2 p-2 border rounded-lg cursor-pointer ${role === "student"
+                ? "border-2 border-[#4fc3f7] bg-[#e3f7fd] text-[#283e56]"
+                : "border-2 border-[#ffd700] text-black"
+                }`}
+              onClick={(e) => {
+                e.preventDefault(); // Evita el comportamiento por defecto
+                e.stopPropagation(); // Detiene la propagación del evento
                 setRole("student");
                 setRoleError("");
                 clearErrors("apiError");
               }}
+              role="button"
+              tabIndex={0}
             >
               <input
                 type="radio"
@@ -227,20 +234,26 @@ export default function LoginPage() {
                 readOnly
               />
               <img src={Student} alt="Student" className="w-10 h-10" />
-              <span className="text-gray-700 font-semibold dark:text-white">{t("student", language)}</span>
+              <span className="text-gray-700 font-semibold dark:text-white">
+                {t("student", language)}
+              </span>
             </div>
+
             {/* Opción profesor */}
             <div
-              className={`flex items-center space-x-2 p-2 border rounded-lg cursor-pointer ${
-                role === "teacher"
-                  ? "border-2 border-[#4fc3f7] bg-[#e3f7fd] text-[#283e56]"
-                  : "border-2 border-[#ffd700] text-black"
-              }`}
-              onClick={() => {
+              className={`flex items-center space-x-2 p-2 border rounded-lg cursor-pointer ${role === "teacher"
+                ? "border-2 border-[#4fc3f7] bg-[#e3f7fd] text-[#283e56]"
+                : "border-2 border-[#ffd700] text-black"
+                }`}
+              onClick={(e) => {
+                e.preventDefault(); // Evita el comportamiento por defecto
+                e.stopPropagation(); // Detiene la propagación del evento
                 setRole("teacher");
                 setRoleError("");
                 clearErrors("apiError");
               }}
+              role="button"
+              tabIndex={0}
             >
               <input
                 type="radio"
@@ -251,7 +264,9 @@ export default function LoginPage() {
                 readOnly
               />
               <img src={Teacher} alt="Teacher" className="w-10 h-10" />
-              <span className="font-semibold dark:text-white">{t("teacher", language)}</span>
+              <span className="font-semibold dark:text-white">
+                {t("teacher", language)}
+              </span>
             </div>
           </div>
           {roleError && (
