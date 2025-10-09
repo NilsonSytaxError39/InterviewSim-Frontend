@@ -65,12 +65,6 @@ export const languageOptions = [
     value: "php",
   },
   {
-    id: 1001,
-    name: "Angular (Framework)",
-    label: "Angular (Framework)",
-    value: "angular",
-  },
-  {
     id: 51,
     name: "C# (Mono 6.6.0.161)",
     label: "C# (Mono 6.6.0.161)",

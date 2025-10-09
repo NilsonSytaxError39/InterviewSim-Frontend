@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import Logo from "../assets/Logo.png";
 import Student from "../assets/Student.png";
 import Teacher from "../assets/Teacher.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Importa useNavigate
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/authContext";
@@ -24,28 +24,35 @@ export default function LoginPage() {
   const [roleError, setRoleError] = useState("");
   const [loading, setLoading] = useState(false);
   const { language } = useTheme();
+  const navigate = useNavigate(); // Inicializa useNavigate
 
-  // Redirige al usuario según el rol autenticado
+  // Nuevo estado para controlar si el usuario ya estaba autenticado antes
+  const [wasAuthenticatedOnMount, setWasAuthenticatedOnMount] = useState(false);
+
+  // Verifica si el usuario ya estaba autenticado al montar el componente
   useEffect(() => {
-    if (isAuthenticated) {
-      console.log("User authenticated with role:", isAuthenticated);
-      // Usar un pequeño delay para asegurar que el estado se haya actualizado completamente
+    setWasAuthenticatedOnMount(isAuthenticated !== false && isAuthenticated !== null);
+  }, [isAuthenticated]);
+
+  // Redirige solo si se autenticó en esta sesión (después de login)
+  useEffect(() => {
+    console.log("isAuthenticated cambió:", isAuthenticated);
+
+    // Si ya estaba autenticado (por ejemplo, desde localStorage), no redirigir
+    // Pero si ahora se autenticó (es decir, antes era false/null y ahora es "student" o "teacher")
+    if (isAuthenticated && typeof isAuthenticated === 'string' && isAuthenticated !== 'false') {
       const timer = setTimeout(() => {
         if (isAuthenticated === "student") {
-          window.location.replace("/student");
+          navigate("/student");
         } else if (isAuthenticated === "teacher") {
-          window.location.replace("/teacher");
+          navigate("/teacher");
         }
       }, 100);
 
       return () => clearTimeout(timer);
     }
-  }, [isAuthenticated]);
-  /**
-   * Maneja el envío del formulario de login.
-   * Realiza validaciones y llama a la función de autenticación.
-   * @param {Object} values - Valores del formulario.
-   */
+  }, [isAuthenticated, navigate]);
+
   const onSubmit = async (values) => {
     if (!role) {
       setRoleError(t("role_required", language));
@@ -216,8 +223,8 @@ export default function LoginPage() {
                 : "border-2 border-[#ffd700] text-black"
                 }`}
               onClick={(e) => {
-                e.preventDefault(); // Evita el comportamiento por defecto
-                e.stopPropagation(); // Detiene la propagación del evento
+                e.preventDefault();
+                e.stopPropagation();
                 setRole("student");
                 setRoleError("");
                 clearErrors("apiError");
@@ -246,8 +253,8 @@ export default function LoginPage() {
                 : "border-2 border-[#ffd700] text-black"
                 }`}
               onClick={(e) => {
-                e.preventDefault(); // Evita el comportamiento por defecto
-                e.stopPropagation(); // Detiene la propagación del evento
+                e.preventDefault();
+                e.stopPropagation();
                 setRole("teacher");
                 setRoleError("");
                 clearErrors("apiError");

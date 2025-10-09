@@ -85,10 +85,8 @@ function EstadisticasEntrevistador() {
             />
             <XAxis
               dataKey="name"
-              tick={{ fontSize: 14, fill: theme === "dark" ? "#fff" : "#000" }}
+              tick={false}  // 👈 Elimina las etiquetas del eje X
               interval={0}
-              angle={0}
-              textAnchor="middle"
               height={40}
             />
             <YAxis
