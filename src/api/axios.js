@@ -1,14 +1,34 @@
 // Importación de la librería Axios para realizar peticiones HTTP
 import axios from "axios";
-// Obtención de la ruta base desde las variables de entorno definidas en Vite.
-const ruta = import.meta.env.VITE_APP_BASE_URL_DEV; 
+
+// Determinar la URL base según el entorno
+const isDevelopment = process.env.NODE_ENV === 'production';
+
+// URL base para el backend
+let BACKEND_URL;
+
+if (isDevelopment) {
+  // Para desarrollo local
+  BACKEND_URL = import.meta.env.VITE_APP_BASE_URL_DEV || 'http://localhost:8000';
+} else {
+  // Para producción (Netlify)
+  BACKEND_URL = import.meta.env.VITE_APP_INTERVIEW_BASE_URL_DEV || 
+                import.meta.env.NEXT_PUBLIC_API_URL || 
+                'https://interviewsim-backend.onrender.com';
+}
+
+// Asegúrate de que no tenga espacios o caracteres extraños
+BACKEND_URL = BACKEND_URL?.trim();
+
+console.log('URL base configurada:', BACKEND_URL); // Para debugging
+
 /**
  * Instancia de Axios configurada para realizar peticiones a la API principal.
  * - baseURL: URL base para las rutas de la API general (`/api`)
  * - withCredentials: Incluye cookies y cabeceras necesarias para autenticación cross-origin
  */
 const instance = axios.create({
-    baseURL: `${ruta}/api`,
+    baseURL: `${BACKEND_URL}/api`, // Cambiado de `${ruta}/api` a `${BACKEND_URL}/api`
     withCredentials: true,
 });
 
@@ -18,7 +38,7 @@ const instance = axios.create({
  * - withCredentials: Incluye cookies y cabeceras necesarias para autenticación cross-origin
  */
 const instanceInterview = axios.create({
-    baseURL: `${ruta}/interview`,
+    baseURL: `${BACKEND_URL}/interview`, // Cambiado de `${ruta}/interview` a `${BACKEND_URL}/interview`
     withCredentials: true,
 });
 
