@@ -2,7 +2,7 @@
 import axios from "axios";
 
 // Determinar la URL base según el entorno
-const isDevelopment = process.env.NODE_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV !== 'production'; // ✅ Correcto
 
 // URL base para el backend
 let BACKEND_URL;
@@ -14,7 +14,7 @@ if (isDevelopment) {
   // Para producción (Netlify)
   BACKEND_URL = import.meta.env.VITE_APP_INTERVIEW_BASE_URL_DEV || 
                 import.meta.env.NEXT_PUBLIC_API_URL || 
-                'https://interviewsim-backend.onrender.com';
+                'https://interviewsim-backend.onrender.com'; // ✅ Sin espacios
 }
 
 // Asegúrate de que no tenga espacios o caracteres extraños
@@ -28,7 +28,7 @@ console.log('URL base configurada:', BACKEND_URL); // Para debugging
  * - withCredentials: Incluye cookies y cabeceras necesarias para autenticación cross-origin
  */
 const instance = axios.create({
-    baseURL: `${BACKEND_URL}/api`, // Cambiado de `${ruta}/api` a `${BACKEND_URL}/api`
+    baseURL: `${BACKEND_URL}/api`,
     withCredentials: true,
 });
 
@@ -38,7 +38,7 @@ const instance = axios.create({
  * - withCredentials: Incluye cookies y cabeceras necesarias para autenticación cross-origin
  */
 const instanceInterview = axios.create({
-    baseURL: `${BACKEND_URL}/interview`, // Cambiado de `${ruta}/interview` a `${BACKEND_URL}/interview`
+    baseURL: `${BACKEND_URL}/interview`,
     withCredentials: true,
 });
 
