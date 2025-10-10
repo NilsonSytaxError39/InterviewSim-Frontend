@@ -1,8 +1,7 @@
-
 /**
  * Contexto de autenticación para la aplicación.
  * Proporciona estado y funciones para login, registro, cierre de sesión y eliminación de usuario.
- * Utiliza cookies y localStorage para persistencia del token.
+ * Utiliza cookies para persistencia del token.
  *
  * @module AuthContext
  */
@@ -54,15 +53,15 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     setErrorMesage(null);
-    localStorage.removeItem("token");
-    Cookies.remove("token");
+    localStorage.removeItem("token"); // ✅ Elimina de localStorage (por si acaso)
+    Cookies.remove("token"); // ✅ Elimina de cookies
   };
 
   // Verifica el login al montar el componente
   useEffect(() => {
     const checkLogin = async () => {
       setLoading(true);
-      const token = localStorage.getItem("token") || Cookies.get("token");
+      const token = Cookies.get("token"); // ✅ Solo busca en cookies
       try {
         if (!token) {
           cleanSession();
@@ -106,7 +105,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
       setIsAuthenticated(response.data.role); // CAMBIO: Guardar el rol en lugar de true
       setErrorMesage(null);
-      localStorage.setItem("token", response.data.tokenSession);
+      Cookies.set("token", response.data.tokenSession, { expires: 7, sameSite: 'strict' }); // ✅ Guarda en cookies
       return { error: false, message: "Inicio de sesión exitoso", role: response.data.role };
     } catch (error) {
       const errorMessage = error.response
@@ -129,7 +128,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setErrorMesage(null);
       const response = await registerRequest(userData);
-      localStorage.setItem("token", response.data.tokenSession);
+      Cookies.set("token", response.data.tokenSession, { expires: 7, sameSite: 'strict' }); // ✅ Guarda en cookies
       if (response.status === 200) {
         return { error: false, message: "Registro exitoso" };
       }
