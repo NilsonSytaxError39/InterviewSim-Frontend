@@ -1,5 +1,6 @@
 // Importación de la librería Axios para realizar peticiones HTTP
 import axios from "axios";
+import Cookies from "js-cookie";
 
 // Determinar la URL base según el entorno
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -24,7 +25,7 @@ console.log('URL base configurada:', BACKEND_URL);
  */
 const instance = axios.create({
     baseURL: `${BACKEND_URL}/api`,
-    withCredentials: true,
+    withCredentials: true, // ✅ Importante para enviar cookies
 });
 
 /**
@@ -32,16 +33,17 @@ const instance = axios.create({
  */
 const instanceInterview = axios.create({
     baseURL: `${BACKEND_URL}/interview`,
-    withCredentials: true,
+    withCredentials: true, // ✅ Importante para enviar cookies
 });
 
-// Interceptor para agregar el token JWT en todas las peticiones de la instancia principal
+// Interceptor para manejar el token en cookies
 instance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = Cookies.get('token'); // ✅ Lee de cookies
     
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      // El token se enviará automáticamente en las cookies gracias a withCredentials: true
+      console.log('Token encontrado en cookies:', token);
     }
     
     return config;
@@ -51,17 +53,19 @@ instance.interceptors.request.use(
   }
 );
 
-// Interceptor para manejar errores 401 de la instancia principal
+// Interceptor para manejar errores 401
 instance.interceptors.response.use(
   (response) => {
+    // Guarda el token en cookies si se recibe en la respuesta
+    if (response.data?.tokenSession) {
+      Cookies.set('token', response.data.tokenSession, { expires: 7, sameSite: 'strict' });
+    }
     return response;
   },
   (error) => {
     if (error.response?.status === 401) {
       console.error('Token inválido o expirado');
-      // Opcional: Limpiar sesión y redirigir al login
-      localStorage.removeItem('token');
-      // Puedes agregar aquí una redirección si lo deseas
+      Cookies.remove('token');
     }
     return Promise.reject(error);
   }
@@ -70,10 +74,10 @@ instance.interceptors.response.use(
 // Interceptor para la instancia de entrevistas
 instanceInterview.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    const token = Cookies.get('token');
     
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      console.log('Token entrevistas encontrado en cookies:', token);
     }
     
     return config;
@@ -83,15 +87,17 @@ instanceInterview.interceptors.request.use(
   }
 );
 
-// Interceptor para manejar errores 401 de la instancia de entrevistas
 instanceInterview.interceptors.response.use(
   (response) => {
+    if (response.data?.tokenSession) {
+      Cookies.set('token', response.data.tokenSession, { expires: 7, sameSite: 'strict' });
+    }
     return response;
   },
   (error) => {
     if (error.response?.status === 401) {
       console.error('Token inválido o expirado para entrevistas');
-      localStorage.removeItem('token');
+      Cookies.remove('token');
     }
     return Promise.reject(error);
   }
