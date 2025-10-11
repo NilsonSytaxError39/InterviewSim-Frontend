@@ -10,7 +10,6 @@ import AreaTeacher from "./pages/AreaTeacher";
 import AreaInterview from "./pages/AreaInterview";
 import { ProtectedRoute } from "./routes";
 import { ToastContainer } from "react-toastify";
-import { ProtectedRoute, StudentRoute, TeacherRoute } from "./routes"; // Importa las rutas por rol
 import { useState, useEffect } from "react";
 import Profile from "./components/ProfileUser/Profile";
 import Settings from "./components/Settings/Settings";
