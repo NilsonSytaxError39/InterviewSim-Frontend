@@ -1,13 +1,12 @@
 /**
  * Contexto de autenticación para la aplicación.
  * Proporciona estado y funciones para login, registro, cierre de sesión y eliminación de usuario.
- * Utiliza cookies para persistencia del token.
+ * Utiliza localStorage para persistencia del token.
  *
  * @module AuthContext
  */
 import { createContext, useEffect, useState, useContext } from "react";
 import PropTypes from "prop-types";
-import Cookies from "js-cookie";
 import {
   verifyTokenRequest,
   LoginRequest,
@@ -53,15 +52,14 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setIsAuthenticated(false);
     setErrorMesage(null);
-    localStorage.removeItem("token"); // ✅ Elimina de localStorage (por si acaso)
-    Cookies.remove("token"); // ✅ Elimina de cookies
+    localStorage.removeItem("token"); // ✅ Elimina de localStorage
   };
 
   // Verifica el login al montar el componente
   useEffect(() => {
     const checkLogin = async () => {
       setLoading(true);
-      const token = Cookies.get("token"); // ✅ Solo busca en cookies
+      const token = localStorage.getItem("token"); // ✅ Busca en localStorage
       try {
         if (!token) {
           cleanSession();
@@ -105,7 +103,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data);
       setIsAuthenticated(response.data.role); // CAMBIO: Guardar el rol en lugar de true
       setErrorMesage(null);
-      Cookies.set("token", response.data.tokenSession, { expires: 7, sameSite: 'strict' }); // ✅ Guarda en cookies
+      localStorage.setItem("token", response.data.tokenSession); // ✅ Guarda en localStorage
       return { error: false, message: "Inicio de sesión exitoso", role: response.data.role };
     } catch (error) {
       const errorMessage = error.response
@@ -128,7 +126,7 @@ export const AuthProvider = ({ children }) => {
       setLoading(true);
       setErrorMesage(null);
       const response = await registerRequest(userData);
-      Cookies.set("token", response.data.tokenSession, { expires: 7, sameSite: 'strict' }); // ✅ Guarda en cookies
+      localStorage.setItem("token", response.data.tokenSession); // ✅ Guarda en localStorage
       if (response.status === 200) {
         return { error: false, message: "Registro exitoso" };
       }
