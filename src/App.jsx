@@ -8,7 +8,7 @@ import { ThemeProvider } from "./context/themeContext";
 import AreaStudent from "./pages/AreaStudent";
 import AreaTeacher from "./pages/AreaTeacher";
 import AreaInterview from "./pages/AreaInterview";
-import { ProtectedRoute } from "./routes";
+import { ProtectedRoute, StudentRoute, TeacherRoute } from "./routes"; // Importa las rutas por rol
 import { ToastContainer } from "react-toastify";
 import { useState, useEffect } from "react";
 import Profile from "./components/ProfileUser/Profile";
@@ -17,20 +17,9 @@ import EditProfilePage from "./pages/EditProfilePage";
 import RecoveryPassword from "./pages/recoveryPassword";
 import ResetPassword from "./pages/resertPassword";
 
-
-/**
- * Componente principal App
- * Gestiona el enrutamiento, contexto de autenticación y tema, y muestra el spinner de carga inicial.
- * Incluye rutas protegidas y públicas, y el contenedor de notificaciones.
- *
- * @component
- * @returns {JSX.Element} Estructura principal de la aplicación InterviewSim.
- */
 function App() {
-  // Estado para mostrar el spinner de carga inicial
   const [loading, setLoading] = useState(true);
 
-  // Efecto para simular carga inicial
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
@@ -38,7 +27,6 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Renderiza spinner mientras carga, luego la app completa
   return loading ? (
     <div className="flex justify-center items-center min-h-screen">
       <Spinner />
@@ -58,16 +46,15 @@ function App() {
                 path="/reset-password/:token"
                 element={<ResetPassword />}
               />
-              <Route element={<ProtectedRoute />}>
-                <Route path="/interview/:id" element={<AreaInterview />} />
-                <Route path="/student" element={<AreaStudent />} />
-                <Route path="/teacher" element={<AreaTeacher />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/edit-profile" element={<EditProfilePage />} />
-              </Route>
+              
+              {/* Rutas protegidas por rol */}
+              <Route path="/student" element={<StudentRoute><AreaStudent /></StudentRoute>} />
+              <Route path="/teacher" element={<TeacherRoute><AreaTeacher /></TeacherRoute>} />
+              <Route path="/interview/:id" element={<ProtectedRoute><AreaInterview /></ProtectedRoute>} />
+              <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+              <Route path="/edit-profile" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
             </Routes>
-            {/* Contenedor de notificaciones */}
             <ToastContainer
               position="bottom-right"
               autoClose={3000}
