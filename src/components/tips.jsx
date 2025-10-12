@@ -88,49 +88,6 @@ function Tips() {
                 ></button>
               ))}
             </div>
-
-            {/* Botón para slide anterior */}
-            <button
-              onClick={goToPreviousSlide}
-              type="button"
-              className="flex absolute top-1/2 left-3 z-40 items-center justify-center w-10 h-10 dark:bg-gray-800 border border-[#ffd700] bg-white dark:border-yellow-600 rounded-lg shadow-sm  focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6 "
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.75 19.5 8.25 12l7.5-7.5"
-                />
-              </svg>
-            </button>
-            {/* Botón para slide siguiente */}
-            <button
-              onClick={goToNextSlide}
-              type="button"
-              className="flex absolute top-1/2 right-3 z-40 items-center justify-center w-10 h-10 dark:bg-gray-800 border border-[#ffd700] bg-white dark:border-yellow-600 rounded-lg shadow-sm  focus:outline-none focus:ring-2 focus:ring-[#ffd700] text-[#283e56] dark:text-white"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="h-6 w-6"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                />
-              </svg>
-            </button>
           </div>
         </div>
       </div>
