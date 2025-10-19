@@ -44,7 +44,7 @@ function PanelInterviews() {
 
   // Componente para mostrar estrellas de dificultad
   const DifficultyStars = ({ difficulty }) => {
-    const difficultyNum = parseInt(difficulty) || 0;
+    const difficultyNum = Math.min(5, Math.max(0, parseInt(difficulty) || 0));
     const maxStars = 5;
 
     return (

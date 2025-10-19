@@ -128,8 +128,6 @@ const translations = {
     filter_by_programming: "Filtrar por programación",
     filter_by_difficulty: "Filtrar por dificultad",
     all_questions_required: "Por favor, responde todas las preguntas antes de enviar",
-    welcome_to_interviewsim: "Bienvenido a InterviewSim",
-    interviewsim_description:"InterviewSim es una plataforma web diseñada para ayudar a estudiantes de Ingeniería de Sistemas y carreras afines a prepararse para procesos de entrevistas técnicas y de conocimiento, simulando entrevistas que se presentan al aplicar a empresas del sector tecnológico.",
     perform_interview: "Realizar entrevista"
   },
   en: {
@@ -261,8 +259,6 @@ const translations = {
     filter_by_programming: "Filter by programming",
     filter_by_difficulty: "Filter by difficulty",
     all_questions_required: "Please answer all questions before submitting",
-    welcome_to_interviewsim: "Welcome to InterviewSim",
-    interviewsim_description: "InterviewSim is a web platform designed to help students of Systems Engineering and related fields prepare for technical and knowledge interviews by simulating interviews they face when applying to companies in the technology sector.",
     perform_interview: "Perform entrevista"
 
   },
