@@ -13,19 +13,6 @@ export default function AreaStudent() {
       <div className="p-5 h-screen flex flex-col overflow-hidden bg-[#cbe2fe] dark:bg-gray-900 text-gray-900 dark:text-gray-200">
         {/* Barra de navegación superior */}
         <Navbar />
-        
-        {/* Sección de introducción - AJUSTADA MÁS ARRIBA */}
-        <div className="mt-2 mb-3 p-2 bg-white bg-opacity-90 rounded-lg shadow-md border border-[#ffd700]">
-          <div className="text-center">
-            <h1 className="text-lg font-bold text-[#283e56] dark:text-white mb-0.5">
-              {t("welcome_to_interviewsim", language)}
-            </h1>
-            <p className="text-xs text-gray-600 dark:text-gray-400">
-              {t("interviewsim_description", language)}
-            </p>
-          </div>
-        </div>
-
         <div className="flex flex-col lg:flex-row my-5 space-y-5 lg:space-y-0 lg:space-x-5 flex-grow overflow-hidden">
           {/* Panel de entrevistas */}
           <div
