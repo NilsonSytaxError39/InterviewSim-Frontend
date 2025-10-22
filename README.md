@@ -56,12 +56,19 @@ La app correrá en:
 📂 Estructura básica
 src/
 ├── main.jsx              # Punto de entrada
+
 ├── App.jsx               # Rutas principales
+
 ├── pages/                # Vistas (Login, Register, Interview, Results)
+
 ├── components/           # Componentes reutilizables
+
 ├── context/              # Manejo de estado global
+
 ├── services/             # Conexión al backend (axios)
+
 ├── assets/               # Imágenes y recursos
+
 └── styles/               # Archivos de estilo / Tailwind
 
 🔗 Conexión con el Backend
@@ -95,7 +102,8 @@ Asegurar el control de errores de red (try/catch en peticiones axios).
 
 👨‍💻 Autor
 
-Nilson Andrés Cuero Ocoro,
+Nilson Andrés Cuero Ocoro
+
 Sebastian Perez Bastidas
 
 Proyecto académico: InterviewSim
