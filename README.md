@@ -51,7 +51,7 @@ npm run preview
 
 
 La app correrá en:
-👉 http://localhost:5173
+👉 http://localhost:4000
 
 📂 Estructura básica
 src/
