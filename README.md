@@ -83,11 +83,17 @@ El backend responde con 5 preguntas tipo opción múltiple, generadas por OpenAI
 El usuario puede responderlas y visualizar los resultados.
 
 🧱 Rutas principales
+
 Ruta	Descripción
+
 /	Página principal o login
+
 /register	Registro de usuario
+
 /interview	Simulación de entrevista con IA
+
 /results	Resultados y análisis de respuestas
+
 💡 Recomendaciones
 
 No subir node_modules ni .env al repositorio.
