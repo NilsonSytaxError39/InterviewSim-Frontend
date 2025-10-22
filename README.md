@@ -97,6 +97,9 @@ Asegurar el control de errores de red (try/catch en peticiones axios).
 
 Nilson Andrés Cuero Ocoro,
 Sebastian Perez Bastidas
+
 Proyecto académico: InterviewSim
+
 Facultad de Ingeniería de Sistemas
+
 Universidad — 2025
